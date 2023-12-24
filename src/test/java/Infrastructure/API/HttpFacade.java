@@ -13,17 +13,16 @@ import java.util.stream.Collectors;
 
 public class HttpFacade {
     public static WrapApiResponse sendHttpRequest(String url, HttpMethod method,
-                                                  Map<String, String> queryParams,
+                                                  Map<String, String> queryParams, Map<String, String> headers,
                                                   String requestBody) throws IOException {
         // create connection
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         connection.setRequestMethod(method.getMethod());
-       // connection.setRequestProperty("X-HTTP-Method-Override", "PATCH");
 
 //        // set headers
-//        for (Map.Entry<String, String> entry : headers.entrySet()) {
-//            connection.setRequestProperty(entry.getKey(), entry.getValue());
-//        }
+        for (Map.Entry<String, String> entry : headers.entrySet()) {
+            connection.setRequestProperty(entry.getKey(), entry.getValue());
+        }
         connection.setRequestProperty("Content-type", "application/json;charset=UTF-8");
         // set query parameters
         if (queryParams != null) {
