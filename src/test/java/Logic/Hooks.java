@@ -14,7 +14,7 @@ public class Hooks {
 
     public void setUp() {
         this.newDriver= new DriverSetup();
-        this.newDriver.setupDriver("chrome"); // GET FROM CONFIG FILE
+        this.newDriver.setupDriver("chrome");
         this.newDriver.navigateToURL("https://www.nba.com/stats/leaders");
     }
 
