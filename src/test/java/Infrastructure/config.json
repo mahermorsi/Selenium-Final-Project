@@ -1,2 +1,4 @@
-url= "url"
-chrome.path="chromedriver.exe"
+{
+  "url":"http://www.rami-levy.co.il/he",
+  "chrome.path":"chromedriver.exe"
+}
