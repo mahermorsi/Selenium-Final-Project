@@ -39,7 +39,7 @@ public class ConfigurationReader {
         return urlNode.asText();
     }
     public static String getChromePath() {
-        JsonNode chromePathNode = getConfiguration().get("chrome.path");
+        JsonNode chromePathNode = getConfiguration().get("chromePath");
 
         if (chromePathNode == null || chromePathNode.isNull()) {
             throw new IllegalStateException("Chrome path configuration is missing or null.");
