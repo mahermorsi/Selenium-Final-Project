@@ -1,16 +1,17 @@
 package Infrastructure.UI;
+import Infrastructure.ConfigurationReader;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class DriverSetup {
-    private static final String driverPATH = "C:/chromedriver-win64/chromedriver.exe"; // get from configuration file
+    private static final String driverPATH = ConfigurationReader.getUrl(); // get from configuration file
     private WebDriver driver;
 
     public void setupDriver(String driverName) {
         this.driver = switch (driverName.toLowerCase()) {
             case "chrome" -> {
-                System.setProperty("webdriver.chrome.driver", driverPATH);
+                System.setProperty("webdriver.chrome.driver", ConfigurationReader.getChromePath());
                 yield new ChromeDriver();
             }
             case "firefox" -> {
