@@ -2,7 +2,7 @@ Feature: Rami Levy website scenarios
   Background:
     Given On Rami-Levy home page
     And Logged in
-    When I add '<item>'
+    When I add item
     | item   |
     | 393870 |
     | 334778 |
@@ -19,7 +19,7 @@ Feature: Rami Levy website scenarios
 
 
   Scenario: Add 3 items validate total price
-    And Get price of '<item>'
+    And Get price of item
       | item   |
       | 393870 |
       | 334778 |

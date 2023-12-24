@@ -1,4 +1,5 @@
 package Steps;
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -10,14 +11,14 @@ public class RamiLevySteps {
     }
 
     @And("Logged in")
-    public void loggedIn() {
+    public void loggedIn(DataTable dataTable) {
     }
 
-    @When("I add {string}")
+    @When("I add item")
     public void iAddItem() {
     }
 
-    @Then("validate cart have {string} items")
+    @Then("validate cart have 3 items")
     public void validateCartHaveItems(String arg0) {
     }
 
@@ -29,8 +30,8 @@ public class RamiLevySteps {
     public void validateItemRemoved() {
     }
 
-    @And("Get price of {string}")
-    public void getPriceOfItem() {
+    @And("Get price of item")
+    public void getPriceOfItem(DataTable dataTable) {
     }
 
     @And("Get cart total price")
