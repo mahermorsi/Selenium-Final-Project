@@ -27,8 +27,8 @@ public class DriverSetup {
     }
 
     public void closeDriver() {
-        driver.quit();
         driver.close();
+        driver.quit();
     }
     public void navigateToURL(String URL) {
 
