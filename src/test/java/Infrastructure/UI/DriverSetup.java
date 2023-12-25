@@ -5,10 +5,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class DriverSetup {
-    private static final String driverPATH = ConfigurationReader.getUrl(); // get from configuration file
     private WebDriver driver;
 
     public void setupDriver(String driverName) {
+        ConfigurationReader.initializeConfig("config.json");
         this.driver = switch (driverName.toLowerCase()) {
             case "chrome" -> {
                 System.setProperty("webdriver.chrome.driver", ConfigurationReader.getChromePath());
@@ -27,8 +27,8 @@ public class DriverSetup {
     }
 
     public void closeDriver() {
-        driver.close();
         driver.quit();
+        driver.close();
     }
     public void navigateToURL(String URL) {
 
