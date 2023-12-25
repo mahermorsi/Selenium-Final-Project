@@ -2,6 +2,7 @@ package Steps;
 import Infrastructure.TestContext;
 import Infrastructure.UI.DriverSetup;
 import Logic.Hooks;
+import Logic.MainPage;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -12,25 +13,17 @@ import io.cucumber.java.en.When;
 
 public class RamiLevySteps {
     private final TestContext context;
-    public Hooks hooks = null;
-    public static DriverSetup newDriver;
+    public Hooks hooks;
+    //public static DriverSetup newDriver;
 
-    @Before
-    public void setupTeamEnvironment() {
-        hooks = new Hooks(newDriver);
-        hooks.setUp();
-        newDriver = hooks.getNewDriver();
-    }
-    @After
-    public void cleanTeamEnvironment() {
-        hooks.tearDown();
-    }
-    public RamiLevySteps(TestContext context) {
+    public RamiLevySteps(TestContext context, Hooks hooks) {
         this.context = context;
+        this.hooks=hooks;
     }
 
     @Given("On Rami-Levy home page")
     public void onRamiLevyHomePage() {
+        MainPage mainPage = new MainPage(hooks.getNewDriver().getDriver());
     }
 
     @And("Logged in")
