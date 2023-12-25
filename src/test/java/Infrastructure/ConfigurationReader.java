@@ -47,6 +47,15 @@ public class ConfigurationReader {
 
         return chromePathNode.asText();
     }
+    public static String getEcomToken() {
+        JsonNode ecomToken = getConfiguration().get("Ecomtoken");
+
+        if (ecomToken == null || ecomToken.isNull()) {
+            throw new IllegalStateException("Chrome path configuration is missing or null.");
+        }
+
+        return ecomToken.asText();
+    }
 
 }
 

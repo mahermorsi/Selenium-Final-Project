@@ -2,16 +2,16 @@ package Logic;
 
 import java.util.Map;
 
-public class BodyRequest {
+public class ItemBodyRequest {
     private String store;
     private int isClub;
     private String supplyAt;
     private Map<String, String> items;
     private Object meta;
-    public BodyRequest() {
+    public ItemBodyRequest() {
     }
 
-    public BodyRequest(String store, int isClub, String supplyAt, Map<String, String> items, Object meta) {
+    public ItemBodyRequest(String store, int isClub, String supplyAt, Map<String, String> items, Object meta) {
         this.store = store;
         this.isClub = isClub;
         this.supplyAt = supplyAt;
