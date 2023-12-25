@@ -1,4 +1,5 @@
 package Steps;
+import Infrastructure.ConfigurationReader;
 import Infrastructure.TestContext;
 import Infrastructure.UI.DriverSetup;
 import Logic.Hooks;
@@ -31,10 +32,12 @@ public class RamiLevySteps {
 
     @Given("On Rami-Levy home page")
     public void onRamiLevyHomePage() {
+        newDriver.navigateToURL(ConfigurationReader.getUrl());
     }
 
     @And("Logged in")
     public void loggedIn(DataTable dataTable) {
+
     }
 
     @When("I add item")
