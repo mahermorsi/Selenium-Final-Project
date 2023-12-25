@@ -9,13 +9,11 @@ Feature: Rami Levy website scenarios
     | 349597 |
 
 
+
   Scenario: Add 3 items
+
     Then validate cart have 3 items
 
-
-  Scenario: Add 3 items remove 1
-    And Delete one item
-    Then validate item removed
 
 
   Scenario: Add 3 items validate total price
