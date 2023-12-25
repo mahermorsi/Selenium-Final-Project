@@ -38,9 +38,9 @@ public class ApiCalls {
         String url = "https://www-api.rami-levy.co.il/api/v2/site/cart/delete";
         return HttpFacade.patchRequest(url,null,ConfigurationReader.getEcomToken());
     }
-    public static void main(String[] args) throws IOException, InterruptedException {
-        ConfigurationReader.initializeConfig("config.json");
-        ApiCalls apiCalls = new ApiCalls();
+//    public static void main(String[] args) throws IOException, InterruptedException {
+//        ConfigurationReader.initializeConfig("config.json");
+//        ApiCalls apiCalls = new ApiCalls();
 //        WrapApiResponse<ItemApiResponse> itemResult;
 //        String store = "279";
 //        int isClub = 0;
@@ -82,4 +82,4 @@ public class ApiCalls {
 //        HttpResponse emptyItemResult=apiCalls.removeAllItemsFromCart();
 //        System.out.println(emptyItemResult);
     }
-}
+

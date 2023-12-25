@@ -14,8 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static Utils.ApiResponseParser.getItemJsonData;
-
 public class MainPage extends BasePage {
     private final WebElement PARENT_PRODUCT_LIST = driver.findElement(By.xpath("//*[@id=\"market\"]/ul"));
     private List<WebElement> ChildrenProductList = PARENT_PRODUCT_LIST.findElements(By.tagName("li"));
