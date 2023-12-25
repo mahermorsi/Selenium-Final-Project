@@ -10,6 +10,8 @@ import org.openqa.selenium.WebDriver;
 import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
+import java.util.List;
+
 import static Utils.ApiResponseParser.getItemJsonData;
 
 
@@ -22,7 +24,7 @@ public class MainPage extends BasePage {
 
     }
 
-    public WrapApiResponse<ItemApiResponse> add3ProductsToCart() throws IOException {
+    public WrapApiResponse<ItemApiResponse> addProductsToCart(List<Products> products) throws IOException {
         ConfigurationReader.initializeConfig("config.json");
         ApiCalls apiCalls = new ApiCalls();
         WrapApiResponse<ItemApiResponse> itemResult;
@@ -30,9 +32,9 @@ public class MainPage extends BasePage {
         int isClub = 0;
         String supplyAt = DateTimeFormat.getCurrentDateTime();
         HashMap<String,String> items = new HashMap<>();
-        items.put(Products.FINISH.getId(), "1.00");
-        items.put(Products.TEA.getId(),"1.00");
-        items.put(Products.CHEESE.getId(),"1.00");
+        for (Products product : products) {
+            items.put(product.getId(), "1.00");
+        }
         ItemBodyRequest jsonBody = new ItemBodyRequest(store,isClub,supplyAt,items,null);
         itemResult= apiCalls.addItemsToCart(jsonBody.toString());
         itemResult.setData(getItemJsonData(itemResult.getData()));
