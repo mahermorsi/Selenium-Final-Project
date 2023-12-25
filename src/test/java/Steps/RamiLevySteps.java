@@ -2,6 +2,7 @@ package Steps;
 import Infrastructure.TestContext;
 import Infrastructure.UI.DriverSetup;
 import Logic.Hooks;
+import Logic.LogInPage;
 import Logic.MainPage;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.After;
@@ -13,26 +14,38 @@ import io.cucumber.java.en.When;
 
 public class RamiLevySteps {
     private final TestContext context;
+    private DriverSetup newDriver;
     public Hooks hooks;
     //public static DriverSetup newDriver;
 
 
     public RamiLevySteps(TestContext context, Hooks hooks) {
         this.context = context;
-        this.hooks=hooks;
+        if (context.get("driver") != null) {
+            newDriver = context.get("driver");
+        } else {
+            // If the driver is not present in the context, it means login has not occurred.
+            // Handle this case accordingly.
+            // For simplicity, you may want to throw an exception or log an error.
+            throw new IllegalStateException("Driver not found in the context. Login might not have occurred.");
+        }
     }
 
     @Given("On Rami-Levy home page")
     public void onRamiLevyHomePage() {
-        MainPage mainPage = new MainPage(hooks.getNewDriver().getDriver());
+        MainPage mainPage = new MainPage(newDriver.getDriver());
     }
 
-    @And("Logged in")
-    public void loggedIn(DataTable dataTable) {
+    @And("Logged in {string} and {string}")
+    public void loggedIn(String userName, String password) {
+        LogInPage logInPage = new LogInPage(newDriver.getDriver());
+        logInPage.clickLogIn();
+        logInPage.signIn(userName, password);
+        logInPage.clickOnEntrance();
     }
 
     @When("I add item")
-    public void iAddItem() {
+    public void iAddItem(DataTable datatable) {
     }
 
     @Then("validate cart have 3 items")
