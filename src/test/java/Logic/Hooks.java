@@ -1,5 +1,8 @@
 package Logic;
+import Infrastructure.ConfigurationReader;
 import Infrastructure.UI.DriverSetup;
+
+import java.lang.module.Configuration;
 
 public class Hooks {
     public DriverSetup newDriver;
@@ -15,7 +18,7 @@ public class Hooks {
     public void setUp() {
         this.newDriver= new DriverSetup();
         this.newDriver.setupDriver("chrome");
-        this.newDriver.navigateToURL("https://www.nba.com/stats/leaders");
+        this.newDriver.navigateToURL(ConfigurationReader.getUrl());
     }
 
 
