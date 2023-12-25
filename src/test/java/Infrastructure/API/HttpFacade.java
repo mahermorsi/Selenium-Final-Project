@@ -50,13 +50,36 @@ public class HttpFacade {
 
         return new WrapApiResponse(status, responseHeaders, body);
     }
-    public static HttpResponse patchRequest(String url,String jsonBody) throws IOException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .header("Content-Type", "application/json")
-                .method("PATCH", HttpRequest.BodyPublishers.ofString(jsonBody))
-                .build();
-        return HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+    public static HttpResponse patchRequest(String url, String jsonBody, String ecomToken) throws IOException, InterruptedException {
+        if (ecomToken == null)
+        {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .method("PATCH", HttpRequest.BodyPublishers.ofString(jsonBody))
+                    .build();
+            return HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        }
+        if (jsonBody != null && !jsonBody.isEmpty()) {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .header("Ecomtoken", ecomToken)  // Added header key-value pair from method parameter
+                    .method("PATCH", HttpRequest.BodyPublishers.ofString(jsonBody))
+                    .build();
+            return HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        }
+        else{
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-type", "application/json;charset=UTF-8")
+                    .header("Ecomtoken","eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3d3dy1hcGkucmFtaS1sZXZ5LmNvLmlsIiwiYXVkIjoiaHR0cHM6Ly93d3ctYXBpLnJhbWktbGV2eS5jby5pbCIsImlhdCI6MTcwMzQ1NTMxNy42ODY1MDMsIm5iZiI6MTcwMzQ1NTM3Ny42ODY1MDMsImV4cCI6MTcwODYzOTMxNy42ODY1MDMsImlkIjo5MjEwODMsImVtYWlsIjoibWFoZXJtb3JzaUBnbWFpbC5jb20iLCJjaWQiOiI5OTAwMTU3OTMwOSJ9.acYz_d9deFSd-tYDjrWl9HKYZCJBGNZWzCuD4nKGrm8")
+                    .method("PATCH", HttpRequest.BodyPublishers.noBody())
+                    .build();
+            return HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        }
+
+
 
     }
 }

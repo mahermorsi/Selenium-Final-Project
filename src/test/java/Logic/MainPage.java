@@ -10,8 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 
 public class MainPage extends BasePage {
-  // private static final By TABLE_TAG = By.xpath("//tbody");
-   // private WebElement tableElement;
+  private final String USER_MENU_XPATH = "";
 
 
     public MainPage(WebDriver driver) {

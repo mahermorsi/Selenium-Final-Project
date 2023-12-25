@@ -1,16 +1,14 @@
-Feature: address page
+Feature: Address Page
+
   Background:
-    Given  logged in
+    Given a logged-in user with credentials 'mahermorsi@gmail.com' and '12345678'
     And navigate to address page
+    When add the following addresses:
+      | Name         | CityId | City         | Street        | StreetNumber | ZipCode | Apartment | Entrance       | Floor |
+      | מוהנד יזבכ  | 1      | נצרת         | ביר אלאמיר   | 1010        | 1649500 | 10        | Main entrance  | 2nd   |
 
-    Scenario: check added address
-      When add the following addresses:
-        | Name      | CityId | City      | Street    | StreetNumber | ZipCode | Apartment | Entrance       | Floor |
-        | John Doe  | 1      | New York  | Broadway  | 123          | 10001   | Apt 101   | Main entrance  | 2nd   |
-        | Jane Smith| 2      | San Fran  | Market St | 456          | 94105   | Apt 202   | Side entrance  | 3rd   |
-      Then validate "addressID" added
+  Scenario: Check added address
+    Then validate address added
 
-    Scenario: delete address
-      When add "addressID"
-      And delete "addressID"
-      Then validate "addressID" deleted
+  Scenario: Check deleted address
+    And delete added address

@@ -7,6 +7,7 @@ import Infrastructure.ConfigurationReader;
 import Logic.Enum.Products;
 import Utils.DateTimeFormat;
 import java.io.IOException;
+import java.net.http.HttpResponse;
 import java.util.HashMap;
 
 import static Utils.ApiResponseParser.getAddressJsonData;
@@ -38,13 +39,11 @@ public class ApiCalls {
         return HttpFacade.sendHttpRequest(url, HttpMethod.DELETE,null,headers,null);
 
     }
-    public WrapApiResponse removeAllItemsFromCart(String jsonBody) throws IOException {
-        String url = BASE_URL + "/api/v2/cart";
-        HashMap<String, String> headers = new HashMap<>();
-        headers.put("Ecomtoken", ConfigurationReader.getEcomToken());
-        return HttpFacade.sendHttpRequest(url,HttpMethod.POST,null,headers,jsonBody);
+    public HttpResponse removeAllItemsFromCart() throws IOException, InterruptedException {
+        String url = "https://www-api.rami-levy.co.il/api/v2/site/cart/delete";
+        return HttpFacade.patchRequest(url,null,ConfigurationReader.getEcomToken());
     }
-//    public static void main(String[] args) throws IOException {
+//    public static void main(String[] args) throws IOException, InterruptedException {
 //        ConfigurationReader.initializeConfig("config.json");
 //        ApiCalls apiCalls = new ApiCalls();
 //        WrapApiResponse<ItemApiResponse> itemResult;
@@ -85,9 +84,7 @@ public class ApiCalls {
 //
 ////
 //        // EMPTY CART
-//        WrapApiResponse<ItemApiResponse> emptyItemResult;
-//        ItemBodyRequest emptyItemJsonBody = new ItemBodyRequest("279",0,DateTimeFormat.getCurrentDateTime(),new HashMap<String,String>(),null);
-//        emptyItemResult=apiCalls.removeAllItemsFromCart(emptyItemJsonBody.toString());
+//        HttpResponse emptyItemResult=apiCalls.removeAllItemsFromCart();
 //        System.out.println(emptyItemResult);
-//    }
-}
+    }
+

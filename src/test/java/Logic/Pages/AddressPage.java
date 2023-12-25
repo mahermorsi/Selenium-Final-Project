@@ -1,6 +1,8 @@
 package Logic.Pages;
 
+import Infrastructure.API.WrapApiResponse;
 import Infrastructure.UI.BasePage;
+import Logic.AddressApiResponse;
 import Logic.AddressBodyRequest;
 import Logic.ApiCalls;
 import org.openqa.selenium.By;
@@ -11,20 +13,27 @@ import java.io.IOException;
 
 public class AddressPage extends BasePage {
 
-    private final String FLEX_DIV_XPATH = "//div[contains(@class, 'wrap-addresses')]";
+    private final String FLEX_DIV_XPATH = "//div[contains(@class, 'add-address')]";
     private WebElement address;
     private ApiCalls apiCalls;
     private WebElement flexDiv;
+    private WrapApiResponse<AddressApiResponse> result;
 
     public AddressPage(WebDriver driver) {
         super(driver);
         this.apiCalls = new ApiCalls();
-        this.flexDiv = driver.findElement(By.xpath(FLEX_DIV_XPATH));
+        //this.flexDiv = driver.findElement(By.xpath(FLEX_DIV_XPATH));
     }
-    public void addAddress(String name, int cityId, String city, String street, String streetNumber, String zipCode, String apartment, String entrance, String floor) throws IOException {
-        apiCalls.addAddress(new AddressBodyRequest(name,cityId,city,street,streetNumber, zipCode,apartment,entrance,floor).toString());
+    public WrapApiResponse<AddressApiResponse> addAddress(String name, int cityId, String city, String street, String streetNumber, String zipCode, String apartment, String entrance, String floor) throws IOException {
+        result = apiCalls.addAddress(new AddressBodyRequest(
+                name,cityId,city,street,streetNumber, zipCode,apartment,entrance,floor)
+                .toString());
+        return result;
+
+        //System.out.println("Add Result: "+result.getData().toString());
+
     }
-    public void de
+
     public boolean checkAddressAdded(String addressID){
         String path = "//label[@for='address_"+addressID+"']";
         try{
@@ -34,6 +43,10 @@ public class AddressPage extends BasePage {
         }
         return address!= null;
 
+    }
+    public void deleteAddress(String addressID) throws IOException {
+        result = apiCalls.deleteAddress(addressID);
+        System.out.println("Delete Result: "+result.getData().toString());
     }
     public boolean checkAddressDeleted(String addressID){
         String path = "//label[@for='address_"+addressID+"']";

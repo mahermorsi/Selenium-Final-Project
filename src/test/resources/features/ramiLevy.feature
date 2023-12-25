@@ -1,7 +1,6 @@
 Feature: Rami Levy website scenarios
   Background:
-    Given On Rami-Levy home page
-    And Logged in
+    Given a logged-in user with credentials 'mahermorsi@gmail.com' and '12345678'
     When I add item
     | item   |
     | 393870 |
@@ -9,13 +8,13 @@ Feature: Rami Levy website scenarios
     | 349597 |
 
 
-  Scenario: Add 3 items
-    Then validate cart have 3 items
 
+  Scenario Outline: Add items
 
-  Scenario: Add 3 items remove 1
-    And Delete one item
-    Then validate item removed
+    Then validate cart item added
+
+    Examples:
+
 
 
   Scenario: Add 3 items validate total price

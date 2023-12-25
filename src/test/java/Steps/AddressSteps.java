@@ -1,47 +1,59 @@
 package Steps;
 
-import Infrastructure.ConfigurationReader;
-import Infrastructure.UI.BasePage;
+import Infrastructure.API.WrapApiResponse;
+import Infrastructure.TestContext;
 import Infrastructure.UI.DriverSetup;
-import Logic.Hooks;
+import Logic.AddressApiResponse;
+import Logic.ApiCalls;
 import Logic.Pages.AddressPage;
-import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.WebDriver;
+import io.cucumber.java.en.Then;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
-public class AddressSteps extends BasePage {
-    private AddressPage addressPage;
-    private DriverSetup newDriver;
+import static Utils.ApiResponseParser.getAddressJsonData;
+import static org.junit.Assert.assertTrue;
+
+public class AddressSteps {
     private final String URL = "https://www.rami-levy.co.il/he/dashboard/addresses";
+    private final String WRAP_ADDRESSES = "//div[contains(@class,\"wrap-addresses\")]";
+    public TestContext context;
+    private DriverSetup newDriver;
+    private AddressPage addressPage;
+    private WebElement wrapAddresses;
 
-    private Hooks hooks;
-
-    public AddressSteps(WebDriver driver) {
-        super(driver);
-        this.hooks = new Hooks(newDriver);
-    }
-
-
-    @Given("logged in")
-    public void loggedIn() {
-        //log in
+    public AddressSteps(TestContext context) {
+        this.context = context;
+        if (context.get("driver") != null) {
+            newDriver = context.get("driver");
+        } else {
+            // If the driver is not present in the context, it means login has not occurred.
+            // Handle this case accordingly.
+            // For simplicity, you may want to throw an exception or log an error.
+            throw new IllegalStateException("Driver not found in the context. Login might not have occurred.");
+        }
     }
 
     @And("navigate to address page")
-    public void navigateToAddressPage() {
-        newDriver.navigateToURL(URL);
-        addressPage = new AddressPage(driver);
+    public void navigateToAddressPage() throws InterruptedException {
+        this.newDriver.navigateToURL(URL);
+        // Ensure the driver is fullscreen or maximized as needed
+        this.newDriver.getDriver().manage().window().fullscreen(); // or maximize()
+
+        // Create the addressPage instance
+        this.addressPage = new AddressPage(newDriver.getDriver());
     }
 
     @When("add the following addresses:")
-    public void addAddresses(DataTable dataTable) throws IOException {
+    public void addAddresses(io.cucumber.datatable.DataTable dataTable) throws IOException {
         List<Map<String, String>> addresses = dataTable.asMaps(String.class, String.class);
 
         for (Map<String, String> address : addresses) {
@@ -55,22 +67,30 @@ public class AddressSteps extends BasePage {
             String entrance = address.get("Entrance");
             String floor = address.get("Floor");
 
-            addressPage.addAddress(name, cityId, city, street, streetNumber, zipCode, apartment, entrance, floor);
+            WrapApiResponse<AddressApiResponse> response = addressPage.addAddress(
+                    name, cityId, city, street, streetNumber, zipCode, apartment, entrance, floor);
+            response.setData(getAddressJsonData(response.getData()));
+            System.out.println("Address added: "+response.getData());
+            context.put("AddAddressResponse", response);
         }
     }
 
-    @Then("validate {string} added")
-    public void validateAdded(String addressId) {
-        assert(addressPage.checkAddressAdded(addressId));
+    @Then("validate address added")
+    public void validateAddressAdded() {
+        wrapAddresses = newDriver.getDriver().findElement(By.xpath(WRAP_ADDRESSES));
+        assertTrue(wrapAddresses.isDisplayed());
     }
 
-    @And("delete {string}")
-    public void delete(String addressId) {
-        addressPage.checkAddressDeleted(addressId);
-    }
 
-    @Then("validate {string} deleted")
-    public void validateDeleted(String a) {
-        addressPage.checkAddressAdded()
+    @And("delete added address")
+    public void deleteAddedAddress() throws IOException {
+        addressPage.refreshPage();
+        WebDriverWait wait = new WebDriverWait(newDriver.getDriver(), Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(WRAP_ADDRESSES)));
+        AddressApiResponse added = context.get("addAddressResponse");
+        System.out.println("added= "+added.getData().toString());
+        Object[] addresses = added.getData().getAllAddresses().keySet().toArray();
+        ApiCalls apiCalls = new ApiCalls();
+        apiCalls.deleteAddress((String)addresses[addresses.length-1]);
     }
 }
