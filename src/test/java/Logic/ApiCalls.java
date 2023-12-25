@@ -6,14 +6,12 @@ import Infrastructure.API.WrapApiResponse;
 import Infrastructure.ConfigurationReader;
 import Logic.Enum.Products;
 import Utils.DateTimeFormat;
-
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.HashMap;
-import java.util.List;
 
 import static Utils.ApiResponseParser.getAddressJsonData;
 import static Utils.ApiResponseParser.getItemJsonData;
+import static Utils.ItemResponseMethods.getSumOfProductsPrices;
 
 public class ApiCalls {
     private final String BASE_URL = ConfigurationReader.getUrl();
@@ -44,9 +42,7 @@ public class ApiCalls {
         // Use the method from the DateTimeFormatterUtil class
         ConfigurationReader.initializeConfig("config.json");
         ApiCalls apiCalls = new ApiCalls();
-        WrapApiResponse<AddressApiResponse> addressResult = null;
-        WrapApiResponse<ItemApiResponse> itemResult = null;
-        WrapApiResponse result = null;
+        WrapApiResponse<ItemApiResponse> itemResult;
         String store = "279";
         int isClub = 0;
         String supplyAt = DateTimeFormat.getCurrentDateTime();
@@ -57,9 +53,10 @@ public class ApiCalls {
         ItemBodyRequest jsonBody = new ItemBodyRequest(store,isClub,supplyAt,items,null);
         itemResult= apiCalls.addItemsToCart(jsonBody.toString());
         itemResult.setData(getItemJsonData(itemResult.getData()));
-        System.out.println(itemResult.getData().getItems().get(1).getPrice());
+        System.out.println("sum prices of 2 FINISH and 3 TEA is: "+ getSumOfProductsPrices(itemResult));
 
         // CALL ADDRESS API REQUEST
+        WrapApiResponse<AddressApiResponse> addressResult;
         String city = "עכברה";
         int city_id = 1337;
         String floor = "12";
@@ -71,9 +68,12 @@ public class ApiCalls {
         addressResult = apiCalls.addAddress(address.toString());
         addressResult.setData(getAddressJsonData(addressResult.getData()));
         Object[] arr= addressResult.getData().getData().getAllAddresses().keySet().toArray();
-        System.out.println("created address with id"+(String)arr[arr.length-1]);
+        //System.out.println("created address with id"+(String)arr[arr.length-1]);
+
+        // DELETE A GIVEN ADDRESS
+        WrapApiResponse result;
         result= apiCalls.deleteAddress((String) arr[arr.length-1]);
-        System.out.println(result.getData());
+        //System.out.println(result.getData());
 
 
 
