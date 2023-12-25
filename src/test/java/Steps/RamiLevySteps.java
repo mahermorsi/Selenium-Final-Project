@@ -15,16 +15,16 @@ public class RamiLevySteps {
     public Hooks hooks = null;
     public static DriverSetup newDriver;
 
-    @Before
-    public void setupTeamEnvironment() {
-        hooks = new Hooks(newDriver);
-        hooks.setUp();
-        newDriver = hooks.getNewDriver();
-    }
-    @After
-    public void cleanTeamEnvironment() {
-        hooks.tearDown();
-    }
+//    @Before
+//    public void setupTeamEnvironment() {
+//        hooks = new Hooks(newDriver);
+//        hooks.setUp();
+//        newDriver = hooks.getNewDriver();
+//    }
+//    @After
+//    public void cleanTeamEnvironment() {
+//        hooks.tearDown();
+//    }
     public RamiLevySteps(TestContext context) {
         this.context = context;
     }
