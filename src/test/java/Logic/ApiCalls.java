@@ -38,44 +38,55 @@ public class ApiCalls {
         return HttpFacade.sendHttpRequest(url, HttpMethod.DELETE,null,headers,null);
 
     }
-    public static void main(String[] args) throws IOException {
-        // Use the method from the DateTimeFormatterUtil class
-        ConfigurationReader.initializeConfig("config.json");
-        ApiCalls apiCalls = new ApiCalls();
-        WrapApiResponse<ItemApiResponse> itemResult;
-        String store = "279";
-        int isClub = 0;
-        String supplyAt = DateTimeFormat.getCurrentDateTime();
-        HashMap<String,String> items = new HashMap<>();
-        items.put(Products.FINISH.getId(), "2.00");
-        items.put(Products.TEA.getId(),"3.00");
-        items.put("164854","1.00");
-        ItemBodyRequest jsonBody = new ItemBodyRequest(store,isClub,supplyAt,items,null);
-        itemResult= apiCalls.addItemsToCart(jsonBody.toString());
-        itemResult.setData(getItemJsonData(itemResult.getData()));
-        System.out.println("sum prices of 2 FINISH and 3 TEA is: "+ getSumOfProductsPrices(itemResult));
+    public WrapApiResponse removeAllItemsFromCart(String jsonBody) throws IOException {
+        String url = BASE_URL + "/api/v2/cart";
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Ecomtoken", ConfigurationReader.getEcomToken());
+        return HttpFacade.sendHttpRequest(url,HttpMethod.POST,null,headers,jsonBody);
+    }
+//    public static void main(String[] args) throws IOException {
+//        ConfigurationReader.initializeConfig("config.json");
+//        ApiCalls apiCalls = new ApiCalls();
+//        WrapApiResponse<ItemApiResponse> itemResult;
+//        String store = "279";
+//        int isClub = 0;
+//        String supplyAt = DateTimeFormat.getCurrentDateTime();
+//        HashMap<String,String> items = new HashMap<>();
+//        items.put(Products.FINISH.getId(), "2.00");
+//        items.put(Products.TEA.getId(),"3.00");
+//        items.put("164854","1.00");
+//        ItemBodyRequest jsonBody = new ItemBodyRequest(store,isClub,supplyAt,items,null);
+//        itemResult= apiCalls.addItemsToCart(jsonBody.toString());
+//        itemResult.setData(getItemJsonData(itemResult.getData()));
+//        System.out.println("sum prices of 2 FINISH and 3 TEA is: "+ getSumOfProductsPrices(itemResult));
 
         // CALL ADDRESS API REQUEST
-        WrapApiResponse<AddressApiResponse> addressResult;
-        String city = "עכברה";
-        int city_id = 1337;
-        String floor = "12";
-        String street = "12";
-        String street_number = "12";
-        String zip="";
-        String apartment="12";
-        AddressBodyRequest address = new AddressBodyRequest(null,city_id,city,street,street_number,zip,apartment,null,floor);
-        addressResult = apiCalls.addAddress(address.toString());
-        addressResult.setData(getAddressJsonData(addressResult.getData()));
-        Object[] arr= addressResult.getData().getData().getAllAddresses().keySet().toArray();
-        //System.out.println("created address with id"+(String)arr[arr.length-1]);
-
-        // DELETE A GIVEN ADDRESS
-        WrapApiResponse result;
-        result= apiCalls.deleteAddress((String) arr[arr.length-1]);
-        //System.out.println(result.getData());
-
-
-
-    }
+//        WrapApiResponse<AddressApiResponse> addressResult;
+//
+//        String city = "עכברה";
+//        int city_id = 1337;
+//        String floor = "12";
+//        String street = "12";
+//        String street_number = "12";
+//        String zip="";
+//        String apartment="12";
+//
+//        AddressBodyRequest address = new AddressBodyRequest(null,city_id,city,street,street_number,zip,apartment,null,floor);
+//        addressResult = apiCalls.addAddress(address.toString());
+//        addressResult.setData(getAddressJsonData(addressResult.getData()));
+//        Object[] arr= addressResult.getData().getData().getAllAddresses().keySet().toArray();
+//        //System.out.println("created address with id"+(String)arr[arr.length-1]);
+//
+//        // DELETE A GIVEN ADDRESS
+//        WrapApiResponse result;
+//        result= apiCalls.deleteAddress((String) arr[arr.length-1]);
+//        //System.out.println(result.getData());
+//
+//
+//        // EMPTY CART
+//        WrapApiResponse<ItemApiResponse> emptyItemResult;
+//        ItemBodyRequest emptyItemJsonBody = new ItemBodyRequest("279",0,DateTimeFormat.getCurrentDateTime(),new HashMap<String,String>(),null);
+//        emptyItemResult=apiCalls.removeAllItemsFromCart(emptyItemJsonBody.toString());
+//        System.out.println(emptyItemResult);
+//    }
 }
