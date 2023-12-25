@@ -8,7 +8,9 @@ import Logic.Enum.Products;
 import Utils.DateTimeFormat;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.HashMap;
+import java.util.List;
 
 import static Utils.ApiResponseParser.getAddressJsonData;
 import static Utils.ApiResponseParser.getItemJsonData;
@@ -30,12 +32,21 @@ public class ApiCalls {
         headers.put("Ecomtoken", ConfigurationReader.getEcomToken());
         return HttpFacade.sendHttpRequest(url, HttpMethod.POST,null,headers,jsonBody);
     }
+
+    public WrapApiResponse deleteAddress(String addressID) throws IOException {
+        String url = "https://www-api.rami-levy.co.il/api/v2/site/clubs/addresses/"+ addressID;
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Ecomtoken", ConfigurationReader.getEcomToken());
+        return HttpFacade.sendHttpRequest(url, HttpMethod.DELETE,null,headers,null);
+
+    }
     public static void main(String[] args) throws IOException {
         // Use the method from the DateTimeFormatterUtil class
         ConfigurationReader.initializeConfig("config.json");
         ApiCalls apiCalls = new ApiCalls();
         WrapApiResponse<AddressApiResponse> addressResult = null;
         WrapApiResponse<ItemApiResponse> itemResult = null;
+        WrapApiResponse result = null;
         String store = "279";
         int isClub = 0;
         String supplyAt = DateTimeFormat.getCurrentDateTime();
@@ -59,7 +70,11 @@ public class ApiCalls {
         AddressBodyRequest address = new AddressBodyRequest(null,city_id,city,street,street_number,zip,apartment,null,floor);
         addressResult = apiCalls.addAddress(address.toString());
         addressResult.setData(getAddressJsonData(addressResult.getData()));
-        System.out.println(addressResult.getData().getData().getAllAddresses());
+        Object[] arr= addressResult.getData().getData().getAllAddresses().keySet().toArray();
+        System.out.println("created address with id"+(String)arr[arr.length-1]);
+        result= apiCalls.deleteAddress((String) arr[arr.length-1]);
+        System.out.println(result.getData());
+
 
 
     }
