@@ -1,11 +1,34 @@
 package Steps;
+import Infrastructure.TestContext;
+import Infrastructure.UI.DriverSetup;
+import Logic.Hooks;
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class RamiLevySteps {
+    private final TestContext context;
+    public Hooks hooks = null;
+    public static DriverSetup newDriver;
+
+    @Before
+    public void setupTeamEnvironment() {
+        hooks = new Hooks(newDriver);
+        hooks.setUp();
+        newDriver = hooks.getNewDriver();
+    }
+    @After
+    public void cleanTeamEnvironment() {
+        hooks.tearDown();
+    }
+    public RamiLevySteps(TestContext context) {
+        this.context = context;
+    }
+
     @Given("On Rami-Levy home page")
     public void onRamiLevyHomePage() {
     }

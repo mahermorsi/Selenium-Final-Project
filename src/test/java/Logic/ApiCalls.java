@@ -52,15 +52,15 @@ public class ApiCalls {
 //        int isClub = 0;
 //        String supplyAt = DateTimeFormat.getCurrentDateTime();
 //        HashMap<String,String> items = new HashMap<>();
-//        items.put(Products.FINISH.getId(), "2.00");
+//        //items.put(Products.FINISH.getId(), "2.00");
 //        items.put(Products.TEA.getId(),"3.00");
 //        items.put("164854","1.00");
 //        ItemBodyRequest jsonBody = new ItemBodyRequest(store,isClub,supplyAt,items,null);
 //        itemResult= apiCalls.addItemsToCart(jsonBody.toString());
 //        itemResult.setData(getItemJsonData(itemResult.getData()));
 //        System.out.println("sum prices of 2 FINISH and 3 TEA is: "+ getSumOfProductsPrices(itemResult));
-
-        // CALL ADDRESS API REQUEST
+//
+////       //  CALL ADDRESS API REQUEST
 //        WrapApiResponse<AddressApiResponse> addressResult;
 //
 //        String city = "עכברה";
@@ -74,15 +74,16 @@ public class ApiCalls {
 //        AddressBodyRequest address = new AddressBodyRequest(null,city_id,city,street,street_number,zip,apartment,null,floor);
 //        addressResult = apiCalls.addAddress(address.toString());
 //        addressResult.setData(getAddressJsonData(addressResult.getData()));
+//        System.out.println(addressResult.getData());
 //        Object[] arr= addressResult.getData().getData().getAllAddresses().keySet().toArray();
-//        //System.out.println("created address with id"+(String)arr[arr.length-1]);
+//        System.out.println("created address with id"+(String)arr[arr.length-1]);
 //
 //        // DELETE A GIVEN ADDRESS
 //        WrapApiResponse result;
 //        result= apiCalls.deleteAddress((String) arr[arr.length-1]);
-//        //System.out.println(result.getData());
+//        System.out.println(result.getData());
 //
-//
+////
 //        // EMPTY CART
 //        WrapApiResponse<ItemApiResponse> emptyItemResult;
 //        ItemBodyRequest emptyItemJsonBody = new ItemBodyRequest("279",0,DateTimeFormat.getCurrentDateTime(),new HashMap<String,String>(),null);
