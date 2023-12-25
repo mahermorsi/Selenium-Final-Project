@@ -4,15 +4,10 @@ import Infrastructure.API.HttpFacade;
 import Infrastructure.API.HttpMethod;
 import Infrastructure.API.WrapApiResponse;
 import Infrastructure.ConfigurationReader;
-import Logic.Enum.Products;
-import Utils.DateTimeFormat;
+
 import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
-
-import static Utils.ApiResponseParser.getAddressJsonData;
-import static Utils.ApiResponseParser.getItemJsonData;
-import static Utils.ItemResponseMethods.getSumOfProductsPrices;
 
 public class ApiCalls {
     private final String BASE_URL = ConfigurationReader.getUrl();
@@ -39,7 +34,7 @@ public class ApiCalls {
         return HttpFacade.sendHttpRequest(url, HttpMethod.DELETE,null,headers,null);
 
     }
-    public HttpResponse removeAllItemsFromCart() throws IOException, InterruptedException {
+    public HttpResponse removeAllItemsFromCart(String string) throws IOException, InterruptedException {
         String url = "https://www-api.rami-levy.co.il/api/v2/site/cart/delete";
         return HttpFacade.patchRequest(url,null,ConfigurationReader.getEcomToken());
     }
