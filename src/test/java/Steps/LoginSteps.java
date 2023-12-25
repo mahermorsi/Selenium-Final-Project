@@ -1,7 +1,9 @@
 package Steps;
 
 import Infrastructure.ConfigurationReader;
+import Infrastructure.TestContext;
 import Infrastructure.UI.DriverSetup;
+import Logic.Hooks;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -12,22 +14,27 @@ import Logic.LogInPage;
 import static org.junit.Assert.assertTrue;
 
 public class LoginSteps {
-    private WebDriver driver;
-    public static DriverSetup newDriver;
-    private LogInPage loginPage = null;
 
+    public DriverSetup newDriver;
+    private LogInPage loginPage = null;
+    public TestContext context;
+
+    public LoginSteps(TestContext context) {
+        this.context = context;
+    }
 
     @Given("Rami-Levy home page")
     public void ramiLevyHomePage() {
-        ConfigurationReader.initializeConfig("config.json");
-        newDriver= new DriverSetup();
-        newDriver.setupDriver("chrome");
+        this.newDriver= new DriverSetup();
+        this.newDriver.setupDriver("chrome");
+        context.put("driver",newDriver);
         newDriver.navigateToURL(ConfigurationReader.getUrl());
-        loginPage = new LogInPage(newDriver.getDriver());
+        newDriver.getDriver().manage().window().fullscreen();
     }
 
     @When("Click Login")
     public void clickLogin() {
+        loginPage = new LogInPage(newDriver.getDriver());
         loginPage.clickLogIn();
     }
 
@@ -37,7 +44,7 @@ public class LoginSteps {
     }
 
     @And("Click Login in popup")
-    public void clickLoginInPopup() throws InterruptedException {
+    public void clickLoginInPopup() {
         loginPage.clickOnEntrance();
     }
 
@@ -46,6 +53,6 @@ public class LoginSteps {
         loginPage = new LogInPage(newDriver.getDriver());
         assertTrue(loginPage.validateLogIn());
         // CLEAN UP
-        newDriver.closeDriver();
+        //newDriver.closeDriver();
     }
 }

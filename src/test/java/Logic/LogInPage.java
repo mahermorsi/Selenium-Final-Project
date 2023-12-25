@@ -9,7 +9,7 @@ import java.time.Duration;
 
 public class LogInPage extends BasePage {
     Duration timeout = Duration.ofSeconds(5);
-    private final String LOGIN_BUTTON = "//*[@id=\"login-user\"]/div[2]";
+    private final String LOGIN_BUTTON = "//div[@id='login-user']";
     private final String EMAIL_FEILD = "//*[@id=\"email\"]";
     private final String PASSWORD_FEILD = "//*[@id=\"password\"]";
     private final String ENTRANCE_BTN = "//button[@aria-label='כניסה']";
