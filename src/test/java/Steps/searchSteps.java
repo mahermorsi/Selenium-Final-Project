@@ -1,7 +1,6 @@
 package Steps;
 
 import Infrastructure.BrowserWrapper;
-import Infrastructure.ConfigurationReader;
 import Infrastructure.TestContext;
 import Logic.SearchPom;
 import io.cucumber.java.en.And;

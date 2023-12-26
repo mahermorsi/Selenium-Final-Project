@@ -2,12 +2,8 @@ package Logic;
 import Infrastructure.BrowserWrapper;
 import Infrastructure.ConfigurationReader;
 import Infrastructure.TestContext;
-import Infrastructure.UI.DriverSetup;
-import com.beust.jcommander.FuzzyMap;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
-import io.cucumber.core.gherkin.Step;
-import io.cucumber.java.*;
 
 
 public class Hooks {

@@ -2,15 +2,12 @@ package Steps;
 
 import Infrastructure.API.WrapApiResponse;
 import Infrastructure.BrowserWrapper;
-import Infrastructure.ConfigurationReader;
 import Infrastructure.TestContext;
 import Logic.*;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 
 import java.util.List;
 import java.io.IOException;

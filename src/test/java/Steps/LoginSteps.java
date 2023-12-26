@@ -24,9 +24,6 @@ public class LoginSteps {
 
     @Given("I am in Rami-Levy home page")
     public void ramiLevyHomePage() {
-//        ConfigurationReader.initializeConfig("config.json");
-////        BrowserWrapper browserWrapper = new BrowserWrapper();
-////        context.put("BrowserWrapper", browserWrapper);
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
         ramiLevyPage = browserWrapper.createPage(MainPage.class, ConfigurationReader.getUrl());
         ramiLevyPage.maximize();
@@ -71,8 +68,7 @@ public class LoginSteps {
             retries++;
         }
         assertTrue(ramiLevyPage.validateLogIn());
-        // CLEAN UP
-        //newDriver.closeDriver();
+
     }
 }
 
