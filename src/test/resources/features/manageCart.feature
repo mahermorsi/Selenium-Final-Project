@@ -2,7 +2,7 @@ Feature: Manage Products
 
   Background:
     Given I am in Rami-Levy home page
-    When Click Login
+    And Click Login
     And Enter 'mahermorsi@gmail.com' and '12345678' in popup
     And Click Login in popup
 

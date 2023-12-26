@@ -2,9 +2,7 @@ package Steps;
 
 import Infrastructure.API.WrapApiResponse;
 import Infrastructure.BrowserWrapper;
-import Infrastructure.ConfigurationReader;
 import Infrastructure.TestContext;
-import Infrastructure.UI.DriverSetup;
 import static Utils.ItemResponseMethods.getSumOfProductsPrices;
 import Logic.Enum.Products;
 import Logic.ItemApiResponse;
@@ -42,19 +40,20 @@ public class manageCartSteps {
     }
 
     @Then("the cart should contain three products")
-    public void theCartShouldContainThreeProducts() throws IOException, InterruptedException {
+    public void theCartShouldContainThreeProducts() {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
         mainPage = browserWrapper.getCurrentPage();
         int sum = context.get("productCount");
         assertEquals(mainPage.validateProductCount(),sum);
         // CLEAN UP
-        //mainPage.removeAllProductsFromCart();
+
     }
 
     @When("i send a Post request to add two products")
-    public void iSendAPostRequestToAddTwoProducts() throws IOException {
+    public void iSendAPostRequestToAddTwoProducts() throws IOException, InterruptedException {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
         mainPage = browserWrapper.getCurrentPage();
+        mainPage.removeAllProductsFromCart();
         List<Products> items = new ArrayList<>(Arrays.asList(Products.FINISH, Products.CHEESE));
         WrapApiResponse<ItemApiResponse> result = mainPage.addProductsToCart(items);
         context.put("addTwoProductResponse",result);
@@ -71,9 +70,19 @@ public class manageCartSteps {
     public void validateTheTotalSumElementFromThePageToTheCalculatedSum() throws InterruptedException {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
         double totalSum = context.get("totalPrice");
-        Thread.sleep(3000);
         mainPage = browserWrapper.getCurrentPage();
-        assertEquals(mainPage.getTotalPrice(),totalSum);
+        double UItotalPrice = mainPage.getTotalPrice();
+        int retries = 0;
+        while(totalSum!=(UItotalPrice) && retries < 5){
+            try {
+                UItotalPrice = mainPage.getTotalPrice();
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                System.out.println(e);
+            }
+            retries++;
+        }
+        assertEquals(UItotalPrice,totalSum);
     }
 
     @When("i send a delete request")

@@ -2,6 +2,8 @@ package Utils;
 
 import Infrastructure.API.WrapApiResponse;
 import Logic.AddressApiResponse;
+
+import java.util.Arrays;
 import java.util.Map;
 
 public class AddressResponseMethod {
@@ -10,8 +12,6 @@ public class AddressResponseMethod {
         return (String) arr[arr.length-1];
     }
     public static int getAddressesCount(WrapApiResponse<AddressApiResponse> addressResult) {
-        Map<String, AddressApiResponse.AddressDetails> addressMap = (Map<String, AddressApiResponse.AddressDetails>) addressResult.getData().getData().getAllAddresses().keySet();
-        return addressMap.values().toArray().length;
+        return addressResult.getData().getData().getAllAddresses().keySet().size();
     }
-
 }
