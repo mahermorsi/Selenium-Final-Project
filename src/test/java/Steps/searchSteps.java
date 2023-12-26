@@ -17,4 +17,12 @@ public class searchSteps {
     @And("validate that URL contains product category")
     public void validateThatURLContainsProductCategory() {
     }
+
+    @When("I click on the {string} category")
+    public void iClickOnTheDairyCategory() {
+    }
+
+    @Then("validate we are navigated to {string}")
+    public void validateWeAreNavigatedTo(String arg0) {
+    }
 }
