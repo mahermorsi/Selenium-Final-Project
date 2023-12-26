@@ -35,7 +35,8 @@ public class manageCartSteps {
         List<Products> items = new ArrayList<>(Arrays.asList(Products.FINISH, Products.TEA, Products.CHEESE));
         WrapApiResponse<ItemApiResponse> result = mainPage.addProductsToCart(items);
         context.put("productCount",result.getData().getItems().size());
-        Thread.sleep(3000);
+        Thread.sleep(2000);
+        mainPage.refreshPage();
         browserWrapper.createPage(MainPage.class);
     }
 
@@ -62,13 +63,8 @@ public class manageCartSteps {
     public void iSendAPostRequestToAddTwoProducts() throws IOException, InterruptedException {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
         mainPage = browserWrapper.getCurrentPage();
-        //mainPage.removeAllProductsFromCart();
         List<Products> items = new ArrayList<>(Arrays.asList(Products.FINISH, Products.CHEESE));
-//        mainPage.refreshPage();
-//        mainPage.maximize();
-//        Thread.sleep(1000);
         WrapApiResponse<ItemApiResponse> result = mainPage.addProductsToCart(items);
-        System.out.println(result.getData());
         context.put("addTwoProductResponse",result);
         browserWrapper.createPage(MainPage.class);
     }
@@ -83,6 +79,7 @@ public class manageCartSteps {
     public void validateTheTotalSumElementFromThePageToTheCalculatedSum() {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
         double totalSum = context.get("totalPrice");
+        System.out.println("API SUM IS :"+totalSum);
         mainPage = browserWrapper.getCurrentPage();
         double UItotalPrice = mainPage.getTotalPrice();
         int retries = 0;
@@ -90,8 +87,10 @@ public class manageCartSteps {
             try {
                 mainPage.refreshPage();
                 mainPage.maximize();
-                Thread.sleep(500);
+                Thread.sleep(1000);
+
                 UItotalPrice = mainPage.getTotalPrice();
+                System.out.println("UI SUM IS :"+UItotalPrice);
             } catch (InterruptedException e) {
                throw new RuntimeException(e);
             }
