@@ -5,7 +5,7 @@ Feature: Test personal information
     And Click Login
     And Enter 'mahermorsi@gmail.com' and '12345678' in popup
     And Click Login in popup
-    And I navigated to 'https://www.rami-levy.co.il/he/dashboard'
+    And I'm navigated to 'https://www.rami-levy.co.il/he/dashboard'
 
     Scenario:
       When I send API request to change my personal information
