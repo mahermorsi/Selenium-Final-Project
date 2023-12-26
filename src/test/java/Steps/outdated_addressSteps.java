@@ -22,7 +22,7 @@ import java.util.Map;
 import static Utils.ApiResponseParser.getAddressJsonData;
 import static org.junit.Assert.assertTrue;
 
-public class AddressSteps {
+public class outdated_addressSteps {
     private final String URL = "https://www.rami-levy.co.il/he/dashboard/addresses";
     private final String WRAP_ADDRESSES = "//div[contains(@class,\"wrap-addresses\")]";
     public TestContext context;
@@ -30,7 +30,7 @@ public class AddressSteps {
     private AddressPage addressPage;
     private WebElement wrapAddresses;
 
-    public AddressSteps(TestContext context) {
+    public outdated_addressSteps(TestContext context) {
         this.context = context;
         if (context.get("driver") != null) {
             newDriver = context.get("driver");
