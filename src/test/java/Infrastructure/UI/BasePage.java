@@ -11,4 +11,7 @@ public class BasePage {
         driver.navigate().refresh();
 
     }
+    public void fullScreen(){
+        driver.manage().window().fullscreen();
+    }
 }
