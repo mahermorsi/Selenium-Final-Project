@@ -49,7 +49,7 @@ public class LoginSteps {
     public void clickLoginInPopup() throws InterruptedException {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
         loginPage.clickOnEntrance();
-        Thread.sleep(3000);
+        Thread.sleep(5000);
         browserWrapper.createPage(MainPage.class);
     }
 

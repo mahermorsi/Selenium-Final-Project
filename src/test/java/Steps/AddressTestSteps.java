@@ -30,9 +30,8 @@ public class AddressTestSteps {
     }
 
     @And("navigated to {string}")
-    public void navigatedToAddressPage(String url) throws InterruptedException {
+    public void navigatedToAddressPage(String url) {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
-        Thread.sleep(3000);
         addressPage = browserWrapper.createPage(AddressPage.class, url);
     }
 

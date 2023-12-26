@@ -50,7 +50,7 @@ public class ApiCalls {
 
     public HttpResponse UpdatePersonalInformation(String jsonBody) throws IOException, InterruptedException {
         String url = "https://www-api.rami-levy.co.il/api/v2/site/clubs/customer/921083";
-        return HttpFacade.putRequest(url,jsonBody,ConfigurationReader.getEcomToken());
+        return HttpFacade.putRequest(url, jsonBody, ConfigurationReader.getEcomToken());
     }
 
 //    public static void main(String[] args) throws IOException, InterruptedException {
@@ -102,6 +102,6 @@ public class ApiCalls {
 //        // EMPTY CART
 //        HttpResponse emptyItemResult=apiCalls.removeAllItemsFromCart();
 //        System.out.println(emptyItemResult);
-    }
+    //}
 }
 
