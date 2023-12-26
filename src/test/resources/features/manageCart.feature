@@ -11,7 +11,7 @@ Feature: Manage Products
     When i send a POST request to add three products
     Then the cart should contain three products
 
-  Scenario: sending a post request to add three products and checking that their price is correct in the UI
+  Scenario: sending a post request to add two products and checking that their price is correct in the UI
     When i send a Post request to add two products
     And i calculate the sum of these products
     Then validate the total sum element from the page to the calculated sum

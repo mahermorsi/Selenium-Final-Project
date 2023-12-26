@@ -1,12 +1,11 @@
 package Steps;
 
 import Infrastructure.API.WrapApiResponse;
+import Infrastructure.BrowserWrapper;
+import Infrastructure.ConfigurationReader;
 import Infrastructure.TestContext;
 import Infrastructure.UI.DriverSetup;
-import Logic.AddressApiResponse;
-import Logic.AddressBodyRequest;
-import Logic.AddressPage;
-import Logic.ApiCalls;
+import Logic.*;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -19,23 +18,20 @@ import static Utils.AddressResponseMethod.getAddressesCount;
 import static org.testng.AssertJUnit.assertEquals;
 
 public class AddressTestSteps {
-    public DriverSetup newDriver;
+
     public TestContext context;
     private AddressBodyRequest address=null;
     private  WrapApiResponse<AddressApiResponse> result = null;
+    private static AddressPage addressPage;
 
     public AddressTestSteps(TestContext context){
         this.context=context;
     }
 
-    @Given("user logged in with credentials {string} and {string}")
-    public void userLoggedInWithCredentials(String username,String password) throws InterruptedException {
-
-    }
-
     @And("navigated to {string}")
     public void navigatedToAddressPage(String url) {
-        newDriver.navigateToURL(url);
+        BrowserWrapper browserWrapper = context.get("BrowserWrapper");
+        addressPage = browserWrapper.createPage(AddressPage.class, ConfigurationReader.getUrl());
     }
 
     @When("I initialize an Address instance with the following fields: {string} {string} {string} {string} {string} {string} {string}")
@@ -53,8 +49,8 @@ public class AddressTestSteps {
     @Then("Verify the given address is added to the list of addresses")
     public void verifyTheGivenAddressIsAddedToTheListOfAddresses() {
         int addressesCount = getAddressesCount(result);
-        AddressPage addressPage = new AddressPage(newDriver.getDriver());
-
+        BrowserWrapper browserWrapper = context.get("BrowserWrapper");
+        addressPage = browserWrapper.getCurrentPage();
         assertEquals(addressesCount,addressPage.getAddressListCount());
     }
 
