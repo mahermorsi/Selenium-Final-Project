@@ -50,7 +50,7 @@ public class LoginSteps {
     public void clickLoginInPopup() throws InterruptedException {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
         loginPage.clickOnEntrance();
-        //Thread.sleep(2000);
+        Thread.sleep(3500);
         browserWrapper.createPage(MainPage.class);
     }
 
