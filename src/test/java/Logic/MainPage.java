@@ -62,12 +62,10 @@ public class MainPage extends BasePage {
 
     public double getTotalPrice() {
         String sumShekels = driver.findElement(SUM_SHEKELS).getText();
-        System.out.println(sumShekels);
         String cleanedString = sumShekels.replace(" ₪", "");
         return (Double.parseDouble(cleanedString));
     }
     public boolean validateLogIn() {
-        driver.manage().window().fullscreen();
         return new WebDriverWait(this.driver,timeout).until(ExpectedConditions.visibilityOfElementLocated(VALIDATE_USER_ELEMENT)).isDisplayed();
     }
     public void clickLogIn() {

@@ -10,6 +10,6 @@ Feature: Test personal information
     Scenario:
       When I send API request to change my personal information
       |    first_name     |    last_name     |    phone      |    sex_id     |    birthday_date     |
-      |       Tzahi       |    Andigar       |  052-5435043  |      1        |    1980-10-10       |
-      Then Validate name is updated to 'Tzahi'
-      And last name is updated to 'Andigar'
+      |       maher       |    legend       |  052-5435043  |      1        |    1980-10-10       |
+      Then Validate name is updated to 'maher'
+      And last name is updated to 'legend'

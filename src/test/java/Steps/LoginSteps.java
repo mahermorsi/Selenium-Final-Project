@@ -24,9 +24,10 @@ public class LoginSteps {
 
     @Given("I am in Rami-Levy home page")
     public void ramiLevyHomePage() {
-        ConfigurationReader.initializeConfig("config.json");
-        BrowserWrapper browserWrapper = new BrowserWrapper();
-        context.put("BrowserWrapper", browserWrapper);
+//        ConfigurationReader.initializeConfig("config.json");
+////        BrowserWrapper browserWrapper = new BrowserWrapper();
+////        context.put("BrowserWrapper", browserWrapper);
+        BrowserWrapper browserWrapper = context.get("BrowserWrapper");
         ramiLevyPage = browserWrapper.createPage(MainPage.class, ConfigurationReader.getUrl());
         ramiLevyPage.maximize();
     }
@@ -49,7 +50,7 @@ public class LoginSteps {
     public void clickLoginInPopup() throws InterruptedException {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
         loginPage.clickOnEntrance();
-        Thread.sleep(5000);
+        //Thread.sleep(2000);
         browserWrapper.createPage(MainPage.class);
     }
 
@@ -57,6 +58,18 @@ public class LoginSteps {
     public void validateLoggedIn() {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
         ramiLevyPage = browserWrapper.getCurrentPage();
+        int retries=0;
+        while (!ramiLevyPage.validateLogIn() && retries<7)
+        {
+            try{
+                Thread.sleep(500);
+
+            }
+            catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            retries++;
+        }
         assertTrue(ramiLevyPage.validateLogIn());
         // CLEAN UP
         //newDriver.closeDriver();

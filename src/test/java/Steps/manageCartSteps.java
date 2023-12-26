@@ -44,18 +44,31 @@ public class manageCartSteps {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
         mainPage = browserWrapper.getCurrentPage();
         int sum = context.get("productCount");
+        int retries = 0;
+        while(sum!=(mainPage.validateProductCount()) && retries < 7){
+            try {
+                mainPage.refreshPage();
+                mainPage.maximize();
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            retries++;
+        }
         assertEquals(mainPage.validateProductCount(),sum);
-        // CLEAN UP
-
     }
 
     @When("i send a Post request to add two products")
     public void iSendAPostRequestToAddTwoProducts() throws IOException, InterruptedException {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
         mainPage = browserWrapper.getCurrentPage();
-        mainPage.removeAllProductsFromCart();
+        //mainPage.removeAllProductsFromCart();
         List<Products> items = new ArrayList<>(Arrays.asList(Products.FINISH, Products.CHEESE));
+//        mainPage.refreshPage();
+//        mainPage.maximize();
+//        Thread.sleep(1000);
         WrapApiResponse<ItemApiResponse> result = mainPage.addProductsToCart(items);
+        System.out.println(result.getData());
         context.put("addTwoProductResponse",result);
         browserWrapper.createPage(MainPage.class);
     }
@@ -67,7 +80,7 @@ public class manageCartSteps {
     }
 
     @Then("validate the total sum element from the page to the calculated sum")
-    public void validateTheTotalSumElementFromThePageToTheCalculatedSum() throws InterruptedException {
+    public void validateTheTotalSumElementFromThePageToTheCalculatedSum() {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
         double totalSum = context.get("totalPrice");
         mainPage = browserWrapper.getCurrentPage();
@@ -75,15 +88,18 @@ public class manageCartSteps {
         int retries = 0;
         while(totalSum!=(UItotalPrice) && retries < 5){
             try {
-                UItotalPrice = mainPage.getTotalPrice();
+                mainPage.refreshPage();
+                mainPage.maximize();
                 Thread.sleep(500);
+                UItotalPrice = mainPage.getTotalPrice();
             } catch (InterruptedException e) {
-                System.out.println(e);
+               throw new RuntimeException(e);
             }
             retries++;
         }
         assertEquals(UItotalPrice,totalSum);
     }
+
 
     @When("i send a delete request")
     public void iSendADeleteRequest() throws IOException, InterruptedException {
@@ -99,6 +115,17 @@ public class manageCartSteps {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
         mainPage = browserWrapper.getCurrentPage();
         assertEquals(200,result.statusCode());
+        int retries = 0;
+        while(!mainPage.checkIfCartIsEmpty() && retries < 5){
+            try {
+                mainPage.refreshPage();
+                mainPage.maximize();
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            retries++;
+        }
         assertTrue(mainPage.checkIfCartIsEmpty());
     }
 }

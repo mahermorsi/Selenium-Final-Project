@@ -9,8 +9,6 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.cucumber.junit.Cucumber;
-import io.cucumber.junit.CucumberOptions;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 
@@ -68,6 +66,7 @@ public class AddressTestSteps {
             retries++;
         }
         assertEquals(addressesCount,addressPage.getAddressListCount());
+        addressPage.closeDriver();
     }
 
     @When("I add the same address twice")
@@ -115,5 +114,6 @@ public class AddressTestSteps {
             retries++;
         }
         assertEquals(previousCount-1,updatedCount);
+        addressPage.closeDriver();
     }
 }
