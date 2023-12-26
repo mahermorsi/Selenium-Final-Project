@@ -7,8 +7,12 @@ import Logic.Enum.Products;
 import Utils.DateTimeFormat;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import java.io.IOException;
 import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,8 +20,10 @@ import static Utils.ApiResponseParser.getItemJsonData;
 
 
 public class MainPage extends BasePage {
+    Duration timeout = Duration.ofSeconds(10);
     private final By SUM_SHEKELS = By.xpath("//*[@id=\"onlineCartHeader\"]/div[1]/div[2]/span/span[1]");
     private final By SUM_AGOROT = By.xpath("//*[@id=\"onlineCartHeader\"]/div[1]/div[2]/span/span[1]/sup");
+    private final By CART_COUNT = By.xpath("//div[@id='market']/ul/li");
 
     public MainPage(WebDriver driver) {
         super(driver);
@@ -48,8 +54,8 @@ public class MainPage extends BasePage {
         return emptyItemResult;
 
     }
-    public String validateProductCount() {
-        return driver.findElement(By.xpath("//*[@id=\"onlineCartHeader\"]/div[1]/div[1]/span[1]")).getText();
+    public int validateProductCount() {
+       return driver.findElements(CART_COUNT).size();
     }
 
     public double getTotalPrice() {
