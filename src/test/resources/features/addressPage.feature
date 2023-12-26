@@ -1,7 +1,10 @@
 Feature: Test on address Page
 
   Background:
-    Given user logged in with credentials 'mahermorsi@gmail.com' and '12345678'
+    Given I am in Rami-Levy home page
+    And Click Login
+    And Enter 'mahermorsi@gmail.com' and '12345678' in popup
+    And Click Login in popup
     And navigated to 'https://www.rami-levy.co.il/he/dashboard/addresses'
 
   Scenario Outline: Validate the added addresses are shown on the address page
@@ -16,6 +19,7 @@ Feature: Test on address Page
 
   Scenario: Validate the cart has one address, after adding the same address twice, and removing it once
     When I add the same address twice
+      | city_id | city     | street        | street_number | zip    | apartment | floor |
       | 1337    |   עכברה  |     12        |      12       |    12  |    12     |  12   |
     And I remove the same address once
     Then Validate the address list contains one address

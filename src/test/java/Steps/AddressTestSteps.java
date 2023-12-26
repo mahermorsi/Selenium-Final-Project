@@ -4,17 +4,18 @@ import Infrastructure.API.WrapApiResponse;
 import Infrastructure.BrowserWrapper;
 import Infrastructure.ConfigurationReader;
 import Infrastructure.TestContext;
-import Infrastructure.UI.DriverSetup;
 import Logic.*;
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-
+import java.util.List;
 import java.io.IOException;
+import java.util.Map;
 
 import static Utils.AddressResponseMethod.getAddressId;
 import static Utils.AddressResponseMethod.getAddressesCount;
+import static Utils.ApiResponseParser.getAddressJsonData;
 import static org.testng.AssertJUnit.assertEquals;
 
 public class AddressTestSteps {
@@ -29,9 +30,10 @@ public class AddressTestSteps {
     }
 
     @And("navigated to {string}")
-    public void navigatedToAddressPage(String url) {
+    public void navigatedToAddressPage(String url) throws InterruptedException {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
-        addressPage = browserWrapper.createPage(AddressPage.class, ConfigurationReader.getUrl());
+        Thread.sleep(3000);
+        addressPage = browserWrapper.createPage(AddressPage.class, url);
     }
 
     @When("I initialize an Address instance with the following fields: {string} {string} {string} {string} {string} {string} {string}")
@@ -44,6 +46,7 @@ public class AddressTestSteps {
     public void addAnAddress() throws IOException {
         ApiCalls apiCalls = new ApiCalls();
         result = apiCalls.addAddress(address.toString());
+        result.setData(getAddressJsonData(result.getData()));
     }
 
     @Then("Verify the given address is added to the list of addresses")
@@ -51,17 +54,32 @@ public class AddressTestSteps {
         int addressesCount = getAddressesCount(result);
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
         addressPage = browserWrapper.getCurrentPage();
+        int retries=0;
+        while(addressesCount!=(addressPage.getAddressListCount()) && retries < 5){
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            retries++;
+        }
         assertEquals(addressesCount,addressPage.getAddressListCount());
     }
 
     @When("I add the same address twice")
-    public void iAddTheSameAddressTwice() throws IOException {
+    public void iAddTheSameAddressTwice(DataTable dataTable) throws IOException {
+        List<Map<String, String>> addressData = dataTable.asMaps(String.class, String.class);
+        Map<String, String> row = addressData.getFirst();
+        address = new AddressBodyRequest(null,Integer.parseInt(row.get("city_id")),row.get("city"),row.get("street"),row.get("street_number"),row.get("zip"),row.get("apartment"),null,row.get("floor"));
         ApiCalls apiCalls = new ApiCalls();
         result = apiCalls.addAddress(address.toString());
-        String addedAddressId = getAddressId(result);
         result=apiCalls.addAddress(address.toString());
+        result.setData(getAddressJsonData(result.getData()));
         String addedAddressId2 = getAddressId(result);
         context.put("addressID2",addedAddressId2);
+        int count = getAddressesCount(result);
+        context.put("AddressListCount",count);
+
     }
 
     @And("I remove the same address once")
@@ -69,10 +87,29 @@ public class AddressTestSteps {
         ApiCalls apiCalls = new ApiCalls();
         String addressID = context.get("addressID2");
         WrapApiResponse DeleteResult = apiCalls.deleteAddress(addressID);
+        BrowserWrapper browserWrapper = context.get("BrowserWrapper");
+        addressPage = browserWrapper.createPage(AddressPage.class);
+
 
     }
     @Then("Validate the address list contains one address")
     public void validateTheAddressListContainsOneAddress() {
-
+        BrowserWrapper browserWrapper = context.get("BrowserWrapper");
+        addressPage = browserWrapper.getCurrentPage();
+        int updatedCount = addressPage.getAddressListCount();
+        int previousCount = context.get("AddressListCount");
+        int retries=0;
+        while(previousCount-1!=(updatedCount) && retries < 5){
+            try {
+                addressPage.refreshPage();
+                addressPage.maximize();
+                Thread.sleep(1000);
+                updatedCount = addressPage.getAddressListCount();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            retries++;
+        }
+        assertEquals(previousCount-1,updatedCount);
     }
 }

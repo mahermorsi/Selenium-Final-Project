@@ -46,9 +46,10 @@ public class LoginSteps {
     }
 
     @And("Click Login in popup")
-    public void clickLoginInPopup() {
+    public void clickLoginInPopup() throws InterruptedException {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
         loginPage.clickOnEntrance();
+        Thread.sleep(3000);
         browserWrapper.createPage(MainPage.class);
     }
 
