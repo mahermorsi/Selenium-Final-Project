@@ -1,40 +1,76 @@
 package Steps;
 
+import Infrastructure.BrowserWrapper;
+import Infrastructure.ConfigurationReader;
+import Infrastructure.TestContext;
+import Logic.SearchPom;
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.Assert;
 
 public class searchSteps {
+    public TestContext context;
 
+    public searchSteps(TestContext context){
+        this.context=context;
+    }
+    @Given("I navigated to {string}")
+    public void openWebsite(String url) {
+        ConfigurationReader.initializeConfig("config.json");
+        BrowserWrapper browserWrapper= new BrowserWrapper();
+        context.put("BrowserWrapper",browserWrapper);
+        SearchPom searchPom = browserWrapper.createPage(SearchPom.class, url);
+        searchPom.maximize();
+    }
 
-    @When("I search for product")
+    @When("I search for bread")
     public void iSearchForProduct() {
+        BrowserWrapper browserWrapper = context.get("BrowserWrapper");
+        SearchPom searchPom = browserWrapper.getCurrentPage();
+        searchPom.searchForAProduct();
     }
-    @Then("I see the search results for the product")
-    public void iSeeTheSearchResultsForTheProduct() {
 
-    }
-    @And("validate that URL contains product category")
+    @And("validate that URL contains bread category")
     public void validateThatURLContainsProductCategory() {
+        BrowserWrapper browserWrapper = context.get("BrowserWrapper");
+        SearchPom searchPom = browserWrapper.getCurrentPage();
+        Assert.assertTrue(searchPom.checkElement());
     }
 
-    @When("I click on the {string} category")
+    @When("I click on the Dairy category")
     public void iClickOnTheDairyCategory() {
+        BrowserWrapper browserWrapper = context.get("BrowserWrapper");
+        SearchPom searchPom = browserWrapper.getCurrentPage();
+        searchPom.navigateToDairy();
     }
 
-    @Then("validate we are navigated to {string}")
-    public void validateWeAreNavigatedTo(String arg0) {
+    @Then("validate we are navigated to the correct url")
+    public void validateWeAreNavigatedTo() {
+        BrowserWrapper browserWrapper = context.get("BrowserWrapper");
+        SearchPom searchPom = browserWrapper.getCurrentPage();
+        Assert.assertTrue(searchPom.checkDairyUrl());
     }
 
-    @When("i search for a product")
+    @When("i search for bread products")
     public void iSearchForAProduct() {
+        BrowserWrapper browserWrapper = context.get("BrowserWrapper");
+        SearchPom searchPom = browserWrapper.getCurrentPage();
+        searchPom.searchForAProduct();
     }
 
-    @And("i filter by brand")
+    @And("i filter by the brand fitness")
     public void iFilterByBrand() {
+        BrowserWrapper browserWrapper = context.get("BrowserWrapper");
+        SearchPom searchPom = browserWrapper.getCurrentPage();
+        searchPom.filterByBrand();
     }
 
     @Then("validate that the products are filtered accordingly")
     public void validateThatTheProductsAreFilteredAccordingly() {
+        BrowserWrapper browserWrapper = context.get("BrowserWrapper");
+        SearchPom searchPom = browserWrapper.getCurrentPage();
+        searchPom.validateFilterResult();
     }
 }

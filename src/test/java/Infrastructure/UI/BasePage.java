@@ -14,4 +14,7 @@ public class BasePage {
     public void maximize(){
         driver.manage().window().maximize();
     }
+    public void fullScreen(){
+        driver.manage().window().fullscreen();
+    }
 }
