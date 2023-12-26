@@ -50,7 +50,7 @@ public class manageCartSteps {
             try {
                 mainPage.refreshPage();
                 mainPage.maximize();
-                Thread.sleep(500);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -63,7 +63,7 @@ public class manageCartSteps {
     public void iSendAPostRequestToAddTwoProducts() throws IOException, InterruptedException {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
         mainPage = browserWrapper.getCurrentPage();
-        List<Products> items = new ArrayList<>(Arrays.asList(Products.FINISH, Products.CHEESE));
+        List<Products> items = new ArrayList<>(Arrays.asList(Products.FINISH, Products.TEA));
         WrapApiResponse<ItemApiResponse> result = mainPage.addProductsToCart(items);
         context.put("addTwoProductResponse",result);
         browserWrapper.createPage(MainPage.class);
@@ -79,7 +79,6 @@ public class manageCartSteps {
     public void validateTheTotalSumElementFromThePageToTheCalculatedSum() {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
         double totalSum = context.get("totalPrice");
-        System.out.println("API SUM IS :"+totalSum);
         mainPage = browserWrapper.getCurrentPage();
         double UItotalPrice = mainPage.getTotalPrice();
         int retries = 0;
@@ -87,10 +86,9 @@ public class manageCartSteps {
             try {
                 mainPage.refreshPage();
                 mainPage.maximize();
-                Thread.sleep(1000);
+                Thread.sleep(2000);
 
                 UItotalPrice = mainPage.getTotalPrice();
-                System.out.println("UI SUM IS :"+UItotalPrice);
             } catch (InterruptedException e) {
                throw new RuntimeException(e);
             }
