@@ -7,7 +7,6 @@ import Logic.AddressApiResponse;
 import Logic.AddressBodyRequest;
 import Logic.AddressPage;
 import Logic.ApiCalls;
-import Utils.FullLoginProcess;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -31,10 +30,7 @@ public class AddressTestSteps {
 
     @Given("user logged in with credentials {string} and {string}")
     public void userLoggedInWithCredentials(String username,String password) throws InterruptedException {
-        FullLoginProcess fullLoginProcess = new FullLoginProcess();
-        newDriver = fullLoginProcess.performFullLogin(username, password);
-        context.put("driver",newDriver);
-        context.put("driver",newDriver);
+
     }
 
     @And("navigated to {string}")
