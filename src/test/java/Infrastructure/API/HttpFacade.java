@@ -78,9 +78,34 @@ public class HttpFacade {
                     .build();
             return HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         }
+    }
+    public static HttpResponse putRequest(String url, String jsonBody, String ecomToken) throws IOException, InterruptedException {
+        if (ecomToken == null) {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .method("PUT", HttpRequest.BodyPublishers.ofString(jsonBody))
+                    .build();
+            return HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        }
+        if (jsonBody != null && !jsonBody.isEmpty()) {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .header("Ecomtoken", ecomToken)  // Added header key-value pair from method parameter
+                    .method("PUT", HttpRequest.BodyPublishers.ofString(jsonBody))
+                    .build();
+            return HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        } else {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .header("Ecomtoken", ecomToken)  // Added header key-value pair from method parameter
+                    .method("PUT", HttpRequest.BodyPublishers.noBody())
+                    .build();
 
-
-
+            return HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        }
     }
 }
 
