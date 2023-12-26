@@ -13,7 +13,7 @@ public class FullLoginProcess {
         newDriver.getDriver().manage().window().fullscreen();
         LogInPage loginPage = new LogInPage(newDriver.getDriver());
         loginPage.fullProcessLogin(username, password);
-        Thread.sleep(5000);
+        Thread.sleep(2500);
 
         return newDriver;
     }
