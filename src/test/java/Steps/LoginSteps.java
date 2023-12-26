@@ -28,7 +28,7 @@ public class LoginSteps {
         BrowserWrapper browserWrapper = new BrowserWrapper();
         context.put("BrowserWrapper", browserWrapper);
         ramiLevyPage = browserWrapper.createPage(MainPage.class, ConfigurationReader.getUrl());
-        ramiLevyPage.fullScreen();
+        ramiLevyPage.maximize();
     }
 
     @When("Click Login")

@@ -21,6 +21,7 @@ public class Hooks {
     }
 //    @BeforeAll
 //    public void beforeAll(){
+//        ConfigurationReader.initializeConfig("config.json");
 //
 //    }
     @Before
