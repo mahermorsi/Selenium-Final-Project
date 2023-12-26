@@ -8,24 +8,20 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
-public class LogInPage extends BasePage {
+public class LoginPopUpPage extends BasePage {
     Duration timeout = Duration.ofSeconds(5);
-    private final By LOGIN_BUTTON = By.xpath("//div[@id='login-user']");
-    private final By EMAIL_FEILD = By.xpath("//*[@id=\"email\"]");
-    private final By PASSWORD_FEILD = By.xpath("//*[@id=\"password\"]");
-    private final String ENTRANCE_BTN = "//button[@aria-label='כניסה']";
 
-    private final By VALIDATE_USER_ELEMENT = By.xpath("//span[contains(text(),'maher')]");
+    private static final By EMAIL_FEILD = By.xpath("//*[@id=\"email\"]");
+    private static final By PASSWORD_FEILD = By.xpath("//*[@id=\"password\"]");
+    private static final String ENTRANCE_BTN = "//button[@aria-label='כניסה']";
 
-    public LogInPage(WebDriver driver) {
+
+
+    public LoginPopUpPage(WebDriver driver) {
         super(driver);
     }
 
-    public void clickLogIn() {
-        new WebDriverWait(this.driver, timeout)
-                .until(ExpectedConditions
-                        .elementToBeClickable(LOGIN_BUTTON)).click();
-    }
+
     public void enterUserName(String name) {
         new WebDriverWait(this.driver,timeout).until(ExpectedConditions.visibilityOfElementLocated(EMAIL_FEILD)).sendKeys(name);
     }
@@ -47,15 +43,11 @@ public class LogInPage extends BasePage {
         driver.findElement((PASSWORD_FEILD)).sendKeys(Keys.ENTER);
     }
 
-    public void fullProcessLogin(String username,String password){
-        clickLogIn();
+    public void performLogin(String username,String password){
         enterUserName(username);
         enterPassword(password);
         clickOnEntrance();
     }
 
-    public boolean validateLogIn() {
-        driver.manage().window().fullscreen();
-        return new WebDriverWait(this.driver,timeout).until(ExpectedConditions.visibilityOfElementLocated(VALIDATE_USER_ELEMENT)).isDisplayed();
-    }
+
 }

@@ -24,6 +24,8 @@ public class MainPage extends BasePage {
     private final By SUM_SHEKELS = By.xpath("//*[@id=\"onlineCartHeader\"]/div[1]/div[2]/span/span[1]");
     private final By SUM_AGOROT = By.xpath("//*[@id=\"onlineCartHeader\"]/div[1]/div[2]/span/span[1]/sup");
     private final By CART_COUNT = By.xpath("//div[@id='market']/ul/li");
+    private final By VALIDATE_USER_ELEMENT = By.xpath("//span[contains(text(),'maher')]");
+    private final By LOGIN_BUTTON = By.xpath("//div[@id='login-user']");
 
     public MainPage(WebDriver driver) {
         super(driver);
@@ -47,12 +49,11 @@ public class MainPage extends BasePage {
         return itemResult;
     }
 
-    public HttpResponse removeAllProductFromCart() throws IOException, InterruptedException {
+    public HttpResponse removeAllProductsFromCart() throws IOException, InterruptedException {
         ApiCalls apiCalls = new ApiCalls();
         HttpResponse emptyItemResult;
         emptyItemResult = apiCalls.removeAllItemsFromCart(null);
         return emptyItemResult;
-
     }
     public int validateProductCount() {
        return driver.findElements(CART_COUNT).size();
@@ -60,9 +61,16 @@ public class MainPage extends BasePage {
 
     public double getTotalPrice() {
         String sumShekels = driver.findElement(SUM_SHEKELS).getText();
-        String sumAgorot = driver.findElement(SUM_AGOROT).getText();
-        double shekels = Double.parseDouble(sumShekels);
-        double agorot = Double.parseDouble(sumAgorot);
-        return (shekels + (agorot / 100));
+        String cleanedString = sumShekels.replace(" ₪", "");
+        return (Double.parseDouble(cleanedString));
+    }
+    public boolean validateLogIn() {
+        driver.manage().window().fullscreen();
+        return new WebDriverWait(this.driver,timeout).until(ExpectedConditions.visibilityOfElementLocated(VALIDATE_USER_ELEMENT)).isDisplayed();
+    }
+    public void clickLogIn() {
+        new WebDriverWait(this.driver, timeout)
+                .until(ExpectedConditions
+                        .elementToBeClickable(LOGIN_BUTTON)).click();
     }
 }
