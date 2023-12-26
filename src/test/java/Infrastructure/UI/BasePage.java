@@ -17,4 +17,8 @@ public class BasePage {
     public void fullScreen(){
         driver.manage().window().fullscreen();
     }
+    public void closeDriver(){
+        driver.close();
+        driver.quit();
+    }
 }

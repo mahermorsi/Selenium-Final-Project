@@ -18,9 +18,7 @@ public class searchSteps {
     }
     @Given("I navigated to {string}")
     public void openWebsite(String url) {
-        ConfigurationReader.initializeConfig("config.json");
-        BrowserWrapper browserWrapper= new BrowserWrapper();
-        context.put("BrowserWrapper",browserWrapper);
+        BrowserWrapper browserWrapper =context.get("BrowserWrapper");
         SearchPom searchPom = browserWrapper.createPage(SearchPom.class, url);
         searchPom.maximize();
     }

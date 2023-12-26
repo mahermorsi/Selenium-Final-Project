@@ -1,43 +1,35 @@
 package Logic;
+import Infrastructure.BrowserWrapper;
+import Infrastructure.ConfigurationReader;
+import Infrastructure.TestContext;
 import Infrastructure.UI.DriverSetup;
+import com.beust.jcommander.FuzzyMap;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
-
+import io.cucumber.core.gherkin.Step;
+import io.cucumber.java.*;
 
 
 public class Hooks {
-    public DriverSetup newDriver;
+    public TestContext context;
 
-    public Hooks() {
-
+    public Hooks(TestContext context) {
+        this.context=context;
     }
-
-    public DriverSetup getNewDriver() {
-        return this.newDriver;
-    }
-
-//    @BeforeAll
-//    public void beforeAll(){
-//        ConfigurationReader.initializeConfig("config.json");
-//
-//    }
     @Before
     public void setUp() {
-        System.out.println("Test has started");
+        System.out.println("Starting a Scenario");
+        ConfigurationReader.initializeConfig("config.json");
+        BrowserWrapper browserWrapper = new BrowserWrapper();
+        context.put("BrowserWrapper", browserWrapper);
 
     }
     @After
     public void tearDown(){
-        System.out.println("Test has ENDED");
+        BrowserWrapper browserWrapper = context.get("BrowserWrapper");
+        browserWrapper.close();
+        System.out.println("Scenario ENDED, closing driver");
     }
-
-//    @AfterAll
-//    public void cleanEnvironmentAndCloseDriver() {
-//        // Code to close the browser
-//        if (newDriver != null) {
-//            newDriver.closeDriver();
-//        }
-//    }
 }
 
 
