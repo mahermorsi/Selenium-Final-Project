@@ -8,11 +8,4 @@ public class DateTimeFormat {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         return currentDateTime.format(formatter);
     }
-//    public static void main(String[] args) {
-//        // Use the method from the DateTimeFormatterUtil class
-//        String formattedDateTime = DateTimeFormat.getCurrentDateTime();
-//
-//        // Print the formatted date-time
-//        System.out.println(formattedDateTime);
-//    }
 }
