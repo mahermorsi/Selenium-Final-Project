@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertTrue;
 
 public class manageCartSteps {
 
@@ -47,7 +48,7 @@ public class manageCartSteps {
         int sum = context.get("productCount");
         assertEquals(mainPage.validateProductCount(),sum);
         // CLEAN UP
-        mainPage.removeAllProductsFromCart();
+        //mainPage.removeAllProductsFromCart();
     }
 
     @When("i send a Post request to add two products")
@@ -67,22 +68,28 @@ public class manageCartSteps {
     }
 
     @Then("validate the total sum element from the page to the calculated sum")
-    public void validateTheTotalSumElementFromThePageToTheCalculatedSum() {
+    public void validateTheTotalSumElementFromThePageToTheCalculatedSum() throws InterruptedException {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
         double totalSum = context.get("totalPrice");
+        Thread.sleep(3000);
         mainPage = browserWrapper.getCurrentPage();
         assertEquals(mainPage.getTotalPrice(),totalSum);
     }
 
     @When("i send a delete request")
     public void iSendADeleteRequest() throws IOException, InterruptedException {
-       HttpResponse result = mainPage.removeAllProductsFromCart();
-       context.put("removedProductsResponse",result);
+        BrowserWrapper browserWrapper = context.get("BrowserWrapper");
+        mainPage = browserWrapper.getCurrentPage();
+        HttpResponse result = mainPage.removeAllProductsFromCart();
+        context.put("removedProductsResponse",result);
     }
 
     @Then("validate that the cart is empty")
     public void validateThatTheCartIsEmpty() {
         HttpResponse result = context.get("removedProductsResponse");
-
+        BrowserWrapper browserWrapper = context.get("BrowserWrapper");
+        mainPage = browserWrapper.getCurrentPage();
+        assertEquals(200,result.statusCode());
+        assertTrue(mainPage.checkIfCartIsEmpty());
     }
 }

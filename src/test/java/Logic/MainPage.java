@@ -21,11 +21,12 @@ import static Utils.ApiResponseParser.getItemJsonData;
 
 public class MainPage extends BasePage {
     Duration timeout = Duration.ofSeconds(10);
-    private final By SUM_SHEKELS = By.xpath("//*[@id=\"onlineCartHeader\"]/div[1]/div[2]/span/span[1]");
-    private final By SUM_AGOROT = By.xpath("//*[@id=\"onlineCartHeader\"]/div[1]/div[2]/span/span[1]/sup");
+    private final By SUM_SHEKELS = By.xpath("//span[@class='position-relative currency-wrap overflow-ellipsis l-text']");
+
     private final By CART_COUNT = By.xpath("//div[@id='market']/ul/li");
     private final By VALIDATE_USER_ELEMENT = By.xpath("//span[contains(text(),'maher')]");
     private final By LOGIN_BUTTON = By.xpath("//div[@id='login-user']");
+    private final By EMPTY_CART_MESSAGE = By.xpath("//div[contains(text(),'השקית שלך ריקה')]");
 
     public MainPage(WebDriver driver) {
         super(driver);
@@ -61,6 +62,7 @@ public class MainPage extends BasePage {
 
     public double getTotalPrice() {
         String sumShekels = driver.findElement(SUM_SHEKELS).getText();
+        System.out.println(sumShekels);
         String cleanedString = sumShekels.replace(" ₪", "");
         return (Double.parseDouble(cleanedString));
     }
@@ -72,5 +74,8 @@ public class MainPage extends BasePage {
         new WebDriverWait(this.driver, timeout)
                 .until(ExpectedConditions
                         .elementToBeClickable(LOGIN_BUTTON)).click();
+    }
+    public boolean checkIfCartIsEmpty(){
+        return new WebDriverWait(this.driver,timeout).until(ExpectedConditions.visibilityOfElementLocated(EMPTY_CART_MESSAGE)).isDisplayed();
     }
 }
