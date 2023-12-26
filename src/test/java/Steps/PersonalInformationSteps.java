@@ -24,7 +24,7 @@ public class PersonalInformationSteps {
     public PersonalInformationSteps(TestContext context){
         this.context=context;
     }
-    @And("I navigated to {string}")
+    @And("I'm navigated to {string}")
     public void NavigatedToDashboard(String url) {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
 

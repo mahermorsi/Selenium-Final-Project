@@ -1,12 +1,8 @@
 package Logic;
-import Infrastructure.ConfigurationReader;
-import Infrastructure.TestContext;
 import Infrastructure.UI.DriverSetup;
-import Steps.LoginSteps;
 import io.cucumber.java.After;
-import io.cucumber.java.AfterAll;
 import io.cucumber.java.Before;
-import io.cucumber.java.BeforeAll;
+
 
 
 public class Hooks {
@@ -19,6 +15,7 @@ public class Hooks {
     public DriverSetup getNewDriver() {
         return this.newDriver;
     }
+
 //    @BeforeAll
 //    public void beforeAll(){
 //        ConfigurationReader.initializeConfig("config.json");
