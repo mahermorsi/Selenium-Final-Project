@@ -16,15 +16,17 @@ public class AddressResponseMethods {
         return addressResult.getData().getData().getAllAddresses().keySet().size();
     }
     public static void deleteAllAddresses(Set<String> addressList) {
-        if (!addressList.isEmpty()) {
-            ApiCalls apiCalls = new ApiCalls();
-            addressList.forEach(key -> {
-                try {
-                    apiCalls.deleteAddress(key);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            });
+        if (addressList != null) {
+            if (!addressList.isEmpty()) {
+                ApiCalls apiCalls = new ApiCalls();
+                addressList.forEach(key -> {
+                    try {
+                        apiCalls.deleteAddress(key);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+            }
         }
     }
 }
