@@ -50,7 +50,7 @@ public class manageCartSteps {
             try {
                 mainPage.refreshPage();
                 mainPage.maximize();
-                Thread.sleep(1000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -60,7 +60,7 @@ public class manageCartSteps {
     }
 
     @When("i send a Post request to add two products")
-    public void iSendAPostRequestToAddTwoProducts() throws IOException, InterruptedException {
+    public void iSendAPostRequestToAddTwoProducts() throws IOException {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
         mainPage = browserWrapper.getCurrentPage();
         List<Products> items = new ArrayList<>(Arrays.asList(Products.FINISH, Products.TEA));
@@ -86,7 +86,7 @@ public class manageCartSteps {
             try {
                 mainPage.refreshPage();
                 mainPage.maximize();
-                Thread.sleep(2000);
+                Thread.sleep(3000);
 
                 UItotalPrice = mainPage.getTotalPrice();
             } catch (InterruptedException e) {
@@ -113,7 +113,7 @@ public class manageCartSteps {
         mainPage = browserWrapper.getCurrentPage();
         assertEquals(200,result.statusCode());
         int retries = 0;
-        while(!mainPage.checkIfCartIsEmpty() && retries < 5){
+        while(!mainPage.checkIfCartIsEmpty() && mainPage.validateProductCount()!=0 && retries < 5){
             try {
                 mainPage.refreshPage();
                 mainPage.maximize();
@@ -123,6 +123,6 @@ public class manageCartSteps {
             }
             retries++;
         }
-        assertTrue(mainPage.checkIfCartIsEmpty());
+        assertEquals(mainPage.validateProductCount(),0);
     }
 }

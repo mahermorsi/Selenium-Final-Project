@@ -5,6 +5,8 @@ import Infrastructure.TestContext;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 
+import java.io.IOException;
+
 
 public class Hooks {
     public TestContext context;
@@ -18,13 +20,14 @@ public class Hooks {
         ConfigurationReader.initializeConfig("config.json");
         BrowserWrapper browserWrapper = new BrowserWrapper();
         context.put("BrowserWrapper", browserWrapper);
-
     }
     @After
-    public void tearDown(){
+    public void tearDown() throws IOException, InterruptedException {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
         browserWrapper.close();
-        System.out.println("Scenario ENDED, closing driver");
+        ApiCalls apiCalls = new ApiCalls();
+        apiCalls.removeAllItemsFromCart();
+        System.out.println("Scenario ENDED, cleaning environment and closing driver");
     }
 }
 
