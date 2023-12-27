@@ -43,7 +43,7 @@ public class ApiCalls {
 
     }
 
-    public HttpResponse removeAllItemsFromCart(String string) throws IOException, InterruptedException {
+    public HttpResponse removeAllItemsFromCart() throws IOException, InterruptedException {
         String url = "https://www-api.rami-levy.co.il/api/v2/site/cart/delete";
         return HttpFacade.patchRequest(url, null, ConfigurationReader.getEcomToken());
     }

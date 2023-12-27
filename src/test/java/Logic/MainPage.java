@@ -53,7 +53,7 @@ public class MainPage extends BasePage {
     public HttpResponse removeAllProductsFromCart() throws IOException, InterruptedException {
         ApiCalls apiCalls = new ApiCalls();
         HttpResponse emptyItemResult;
-        emptyItemResult = apiCalls.removeAllItemsFromCart(null);
+        emptyItemResult = apiCalls.removeAllItemsFromCart();
         return emptyItemResult;
     }
     public int validateProductCount() {
