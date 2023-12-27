@@ -12,9 +12,10 @@ import io.cucumber.java.en.When;
 import java.util.List;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Set;
 
-import static Utils.AddressResponseMethod.getAddressId;
-import static Utils.AddressResponseMethod.getAddressesCount;
+import static Utils.AddressResponseMethods.getAddressId;
+import static Utils.AddressResponseMethods.getAddressesCount;
 import static Utils.ApiResponseParser.getAddressJsonData;
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -46,6 +47,7 @@ public class AddressTestSteps {
         ApiCalls apiCalls = new ApiCalls();
         result = apiCalls.addAddress(address.toString());
         result.setData(getAddressJsonData(result.getData()));
+        context.put("addressResponse",result.getData().getData().getAllAddresses().keySet());
     }
 
     @Then("Verify the given address is added to the list of addresses")
@@ -74,6 +76,7 @@ public class AddressTestSteps {
         result = apiCalls.addAddress(address.toString());
         result=apiCalls.addAddress(address.toString());
         result.setData(getAddressJsonData(result.getData()));
+        context.put("addressToDelete",result.getData().getData().getAllAddresses().keySet());
         String addedAddressId2 = getAddressId(result);
         context.put("addressID2",addedAddressId2);
         int count = getAddressesCount(result);
@@ -85,7 +88,11 @@ public class AddressTestSteps {
     public void iRemoveTheSameAddressOnce() throws IOException {
         ApiCalls apiCalls = new ApiCalls();
         String addressID = context.get("addressID2");
-        WrapApiResponse DeleteResult = apiCalls.deleteAddress(addressID);
+        apiCalls.deleteAddress(addressID);
+        // update the list of addresses which context hold, it shouldn't contain an address that we deleted via API request.
+        Set<String> addresses = context.get("addressToDelete");
+        addresses.remove(addressID);
+        context.put("addressResponse",addresses);
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
         addressPage = browserWrapper.createPage(AddressPage.class);
 
