@@ -4,16 +4,10 @@ import Infrastructure.API.HttpFacade;
 import Infrastructure.API.HttpMethod;
 import Infrastructure.API.WrapApiResponse;
 import Infrastructure.ConfigurationReader;
-import Logic.Enum.Products;
-import Utils.AddressResponseMethod;
-import Utils.DateTimeFormat;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
-
-import static Utils.ApiResponseParser.getAddressJsonData;
-import static Utils.ApiResponseParser.getItemJsonData;
 
 public class ApiCalls {
     private final String BASE_URL = ConfigurationReader.getUrl();

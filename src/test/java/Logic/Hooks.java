@@ -2,6 +2,7 @@ package Logic;
 import Infrastructure.BrowserWrapper;
 import Infrastructure.ConfigurationReader;
 import Infrastructure.TestContext;
+import Utils.AddressResponseMethods;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 
@@ -24,10 +25,11 @@ public class Hooks {
     @After
     public void tearDown() throws IOException, InterruptedException {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
-        browserWrapper.close();
         ApiCalls apiCalls = new ApiCalls();
         apiCalls.removeAllItemsFromCart();
+        AddressResponseMethods.deleteAllAddresses(context.get("addressResponse"));
         System.out.println("Scenario ENDED, cleaning environment and closing driver");
+        browserWrapper.close();
     }
 }
 
