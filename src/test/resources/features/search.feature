@@ -4,11 +4,11 @@ Feature: Search Feature
 
   Scenario: User searches for a product
     When I search for bread
-    Then validate that URL contains bread category
+    Then validate that the page contains bread category
 
   Scenario: User navigates to a specific product category
     When I click on the Dairy category
-    Then validate we are navigated to the correct url
+    Then validate we are navigated to the correct section
 
   Scenario: filtering search
     When i search for bread products

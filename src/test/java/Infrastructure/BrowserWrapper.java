@@ -45,6 +45,9 @@ public class BrowserWrapper {
         driver.close();
     }
 
+    public void maximize() {
+        driver.manage().window().maximize();
+    }
     public <T extends BasePage> T getCurrentPage(){
         return (T)currentPage;
     }

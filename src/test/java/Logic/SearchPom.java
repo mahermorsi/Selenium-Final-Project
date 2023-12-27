@@ -18,13 +18,23 @@ public class SearchPom extends BasePage {
     private final String FITNESS_BRAND = "//*[@id=\"__layout\"]/div/div[1]/div[1]/div[3]/div[3]/div/div[1]/div[2]/div/div[4]/div[2]/label/span";
     private final String BREAD = "לחם";
 
+    private static WebElement searchBoxElement;
+    private static WebElement diaryCategoryElement;
+
     public SearchPom(WebDriver driver) {
         super(driver);
+        init();
+    }
+
+    public void init() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        searchBoxElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SEARCH_BOX)));
+        diaryCategoryElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(DAIRY_CATEGORY)));
     }
 
     public void searchForAProduct() {
-        driver.findElement(By.xpath(SEARCH_BOX)).sendKeys(BREAD);
-        driver.findElement(By.xpath(SEARCH_BOX)).sendKeys(Keys.ENTER);
+        searchBoxElement.sendKeys(BREAD);
+        searchBoxElement.sendKeys(Keys.ENTER);
     }
 
     public boolean checkElement() {
@@ -34,7 +44,7 @@ public class SearchPom extends BasePage {
     }
 
     public void navigateToDairy() {
-        driver.findElement(By.xpath(DAIRY_CATEGORY)).click();
+        diaryCategoryElement.click();
     }
 
     public boolean checkDairyUrl() {
@@ -47,8 +57,7 @@ public class SearchPom extends BasePage {
 
     public void filterByBrand() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(FILTER)));
-        driver.findElement(By.xpath(FILTER)).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(FILTER))).click();
         driver.findElement(By.xpath(FITNESS_BRAND)).click();
     }
 
