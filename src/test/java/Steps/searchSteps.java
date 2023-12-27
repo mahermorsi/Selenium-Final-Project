@@ -18,8 +18,8 @@ public class searchSteps {
     @Given("I navigated to {string}")
     public void openWebsite(String url) {
         BrowserWrapper browserWrapper =context.get("BrowserWrapper");
+        browserWrapper.maximize();
         SearchPom searchPom = browserWrapper.createPage(SearchPom.class, url);
-        searchPom.maximize();
     }
 
     @When("I search for bread")
@@ -29,7 +29,7 @@ public class searchSteps {
         searchPom.searchForAProduct();
     }
 
-    @And("validate that URL contains bread category")
+    @And("validate that the page contains bread category")
     public void validateThatURLContainsProductCategory() {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
         SearchPom searchPom = browserWrapper.getCurrentPage();
@@ -43,7 +43,7 @@ public class searchSteps {
         searchPom.navigateToDairy();
     }
 
-    @Then("validate we are navigated to the correct url")
+    @Then("validate we are navigated to the correct section")
     public void validateWeAreNavigatedTo() {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
         SearchPom searchPom = browserWrapper.getCurrentPage();
