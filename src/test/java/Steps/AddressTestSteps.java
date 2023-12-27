@@ -63,7 +63,6 @@ public class AddressTestSteps {
             retries++;
         }
         assertEquals(addressesCount,addressPage.getAddressListCount());
-        addressPage.closeDriver();
     }
 
     @When("I add the same address twice")
@@ -111,6 +110,5 @@ public class AddressTestSteps {
             retries++;
         }
         assertEquals(previousCount-1,updatedCount);
-        addressPage.closeDriver();
     }
 }
