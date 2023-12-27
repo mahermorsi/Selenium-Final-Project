@@ -15,6 +15,7 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Map;
 
+import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertTrue;
 
 public class PersonalInformationSteps {
@@ -27,7 +28,6 @@ public class PersonalInformationSteps {
     @And("I'm navigated to {string}")
     public void NavigatedToDashboard(String url) {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
-
         dashboardPage=browserWrapper.createPage(DashboardPage.class,url);
     }
     @When("I send API request to change my personal information")
@@ -37,10 +37,12 @@ public class PersonalInformationSteps {
         PersonalInformationObject person = new PersonalInformationObject(row.get("first_name"),row.get("last_name"),row.get("phone"),null,Integer.parseInt(row.get("sex_id")),row.get("birthday_date"));
         ApiCalls apiCalls = new ApiCalls();
         HttpResponse response= apiCalls.UpdatePersonalInformation(person.toString());
+        context.put("personalResponse",response);
     }
     @Then("Validate name is updated to {string}")
     public void validateFirstName(String name){
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
+        HttpResponse resultResponse = context.get("personalResponse");
         dashboardPage=browserWrapper.getCurrentPage();
 
         int retries=0;
@@ -55,6 +57,7 @@ public class PersonalInformationSteps {
             }
         }
         while(!dashboardPage.isFirstNameUpdated(name) && retries < 5);
+        assertEquals(resultResponse.statusCode(),200);
         assertTrue(dashboardPage.isFirstNameUpdated(name));
 
     }
@@ -63,6 +66,5 @@ public class PersonalInformationSteps {
         BrowserWrapper browserWrapper = context.get("BrowserWrapper");
         dashboardPage=browserWrapper.getCurrentPage();
         assertTrue(dashboardPage.isLastNameUpdated(lastName));
-
     }
 }

@@ -123,6 +123,7 @@ public class manageCartSteps {
             }
             retries++;
         }
+        assertEquals(result.statusCode(),200);
         assertEquals(mainPage.validateProductCount(),0);
     }
 }
