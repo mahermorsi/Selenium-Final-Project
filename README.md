@@ -1,0 +1,1 @@
+Complete E2E test plan & sanity suite for Rami Levy's website, using Selenium and Cucumber tools in Java language. Including development of infrastructure from scratch, UI/API tests, Page-Object Model, logging and reporting.
