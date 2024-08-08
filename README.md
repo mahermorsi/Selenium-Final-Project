@@ -24,8 +24,6 @@ Key features of this project include:
 - [Setup](#setup)
 - [Running Tests](#running-tests)
 - [Reporting](#reporting)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Project Structure
 
